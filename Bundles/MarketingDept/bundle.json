@@ -1,0 +1,10 @@
+{
+  "name": "MarketingDept",
+  "version": "0.1.0",
+  "packs": [
+    "seo-core-pack",
+    "ads-core-pack",
+    "social-core-pack",
+    "analytics-core-pack"
+  ]
+}

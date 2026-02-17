@@ -1,0 +1,31 @@
+{
+  "name": "ai-openclaw-skeletons",
+  "private": true,
+  "version": "0.1.0",
+  "description": "OpenClaw production skeleton monorepo",
+  "license": "MIT",
+  "packageManager": "pnpm@8.15.9",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "build": "tsc -p tsconfig.json",
+    "pack-lint": "node scripts/pack-lint.mjs",
+    "release-dry-run": "node scripts/release-install.mjs --dry-run",
+    "verify:pack": "node scripts/verify-pack.mjs",
+    "openclaw-release": "node scripts/openclaw-release.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.20.0",
+    "@types/node": "^20.17.19",
+    "eslint": "^9.20.1",
+    "prettier": "^3.5.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.5",
+    "zod": "^3.24.1"
+  }
+}

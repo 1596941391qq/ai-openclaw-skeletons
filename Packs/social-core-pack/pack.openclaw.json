@@ -1,0 +1,15 @@
+{
+  "tools": {
+    "allow": [],
+    "deny": []
+  },
+  "mcpServers": {},
+  "hooks": {
+    "SessionStart": [],
+    "PreToolUse": [],
+    "PostToolUse": [],
+    "SessionEnd": []
+  },
+  "skills": {},
+  "contextFiles": []
+}
