@@ -181,8 +181,8 @@ mkdir Packs/my-first-pack
 
 ### 结构化上下文层次（通用）
 
-- **Layer 1**: Product Marketing Context（稳定策略层）
-- **Layer 2**: Campaign Ops Context（动态执行层）
+- **Layer 1**: Core Strategy Context（稳定策略层）
+- **Layer 2**: Runtime Operations Context（动态执行层）
 
 ### 公开仓边界
 
