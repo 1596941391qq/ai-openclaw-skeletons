@@ -1,451 +1,433 @@
-# ai-openclaw-skeletons
+# OpenClaw Skeletons
 
-面向 OpenClaw 的生产级骨架集合仓库。
+面向 AI Agent 的**可插拔数字员工骨架系统**。
 
-这个仓库不是业务代码仓库，而是“能力基础设施仓库”：
-把营销部门需要的核心能力做成可安装、可验证、可组合、可回滚的标准化单元。
+不是玩具，不是 demo，是**24小时运行的生产级数字员工基础设施**。
 
-## What
+---
 
-### 1. 仓库解决的是什么问题
+## 核心理念
 
-在 24 小时运行的 OpenClaw 营销体系中，如果没有统一骨架，常见问题是：
+### 什么是数字员工骨架？
 
-- SEO、社媒、广告各自实现一套流程，难以协同。
-- 配置靠手改，安装冲突、升级冲突、回滚困难。
-- Skill 调 Skill 缺少确定性边界，运行结果不可复现。
-- 系统规模变大后，能力不可治理、不可审计。
+想象你要雇佣一个员工：
+- 需要明确职责边界（什么该做，什么不该做）
+- 需要工作手册（遇到什么情况怎么处理）
+- 需要审计监督（做了什么，做得怎么样）
+- 需要可替换（做不好就换，不依赖特定个体）
 
-本仓库的定位是：
+**数字员工骨架就是这个基础设施：**
+- Pack = 能力单元（员工的专业技能）
+- Bundle = 岗位组合（完整岗位的能力集合）
+- Hook = 监督机制（审计、权限、干预点）
+- Contract = 协作契约（不同员工如何配合）
 
-- 提供 Pack/Bundle/Release 三层分发模型。
-- 提供 OpenClaw 配置合并与治理边界。
-- 提供安装、验证、回滚、CI 的最小生产闭环。
+### 为什么需要骨架？
 
-### 2. 核心对象
-
-- `Pack`：最小能力交付单元，可单独安装。
-- `Bundle`：多个 Pack 的逻辑组合（如 `MarketingDept`）。
-- `Release`：全量快照，支持一键安装与回滚。
-- `Contract`：跨模块共享契约（CLI/MCP/Skill/Hook/Verify）。
-
-### 3. 当前目录结构
-
-```text
-ai-openclaw-skeletons/
-  Packs/
-    # 核心营销能力
-    seo-core-pack/
-    ads-core-pack/
-    social-core-pack/
-    analytics-core-pack/
-    # 基础设施与优化
-    audit-core-pack/          # 审计、权限、工具治理
-    skill-router-pack/        # 智能技能路由
-    hook-executor-pack/       # Hook 执行器
-    context-preloader-pack/   # 上下文预热
-    pseo-pipeline-pack/       # PSEO 全流程闭环
-    audit-dashboard-pack/     # 审计可视化
-  Bundles/
-    MarketingDept/
-      bundle.json
-  Releases/
-  contracts/
-    schemas/
-      openclaw.schema.json
-  scripts/
-    pack-install.mjs
-    pack-lint.mjs
-    verify-pack.mjs
-    release-install.mjs
-    release-rollback.mjs
-    openclaw-release.mjs
-  templates/
-    .openclaw/
-      openclaw.json
+**没有骨架的 AI Agent：**
+```
+用户: "帮我发个邮件"
+Agent: 直接发
+→ 不知道发给谁
+→ 不知道说什么
+→ 发了也不知道发没发成功
+→ 更不能审计和回滚
 ```
 
-## Why
-
-### 1. 为什么采用 Pack / Bundle / Release 三层
-
-目标是同时满足两种能力：
-
-- 单装：只安装某个能力（例如只上 `seo-core-pack`）。
-- 全装：一键安装整套营销系统（例如 `MarketingDept`）。
-
-三层分发能把“能力拆分”和“整套交付”解耦：
-
-- Pack 负责能力边界与可复用。
-- Bundle 负责业务场景编排。
-- Release 负责运维效率与一致性。
-
-### 2. 为什么强调“增量合并”而非“覆盖安装”
-
-Pack 安装如果覆盖 `~/.openclaw`，会导致：
-
-- 其他 Pack 被破坏。
-- 用户本地自定义被覆盖。
-- 多团队并行迭代无法共存。
-
-因此本仓库强制规则：
-
-- Pack：只做增量 merge，幂等执行。
-- Release：允许覆盖，但必须先自动备份并支持回滚。
-
-### 3. 为什么边界按“数据闭环”而不是按“流程阶段”
-
-流程阶段（调研、产出、发布、复盘）天然会在各渠道重复，容易形成孤岛。
-
-本仓库采用数据闭环思路：
-
-- 渠道能力（SEO/Social/Ads）是执行层。
-- 统一对象和契约是协作层。
-- Hook 和 Verify 是治理层。
-
-这样可以在不同渠道之间共享同一套语义和验收口径。
-
-## How
-
-### 1. OpenClaw 运行时与配置入口
-
-运行时目标目录：
-
-- Windows: `%USERPROFILE%/.openclaw`
-- macOS/Linux: `~/.openclaw`
-
-唯一配置入口文件：
-
-- `~/.openclaw/openclaw.json`
-
-基线模板：
-
-- `templates/.openclaw/openclaw.json`
-
-### 2. 配置契约（允许合并的字段）
-
-Pack 只允许新增/合并以下字段：
-
-- `tools.allow`
-- `tools.deny`
-- `mcpServers`
-- `hooks`
-- `skills`
-- `contextFiles`
-
-不允许：
-
-- 删除他人配置
-- 重置整份 `openclaw.json`
-- 覆盖未声明字段
-
-### 3. MCP Server 最小结构
-
-`mcpServers.<name>` 固定字段：
-
-- `command`（必填）
-- `args`（必填，可空数组）
-- `env`（必填，可空对象）
-- `transport`（必填，枚举：`stdio` / `http` / `sse`）
-
-### 4. Hook 触发点（第一版固定）
-
-- `SessionStart`
-- `PreToolUse`
-- `PostToolUse`
-- `SessionEnd`
-
-### 5. 安装与发布模型
-
-#### Pack 安装（增量、幂等）
-
-```bash
-node scripts/pack-install.mjs <pack-name>
+**有骨架的 AI Agent：**
+```
+用户: "帮我发个邮件"
+Agent: 
+  1. 检查权限（PreToolUse Hook）
+  2. 加载上下文（Context Preloader）
+  3. 路由到正确 skill（Skill Router）
+  4. 执行并记录（Audit Trail）
+  5. 返回结果（标准化输出）
+→ 可控、可审计、可回滚、可替换
 ```
 
-示例：
+---
 
-```bash
-node scripts/pack-install.mjs seo-core-pack
+## 架构设计
+
+### 三层模型
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  Layer 3: Release (部署层)                                │
+│  完整数字员工镜像，一键部署，支持回滚                        │
+└─────────────────────────────────────────────────────────┘
+                           ▲
+                           │ 组合
+┌─────────────────────────────────────────────────────────┐
+│  Layer 2: Bundle (岗位层)                                 │
+│  多个 Pack 的组合，形成完整岗位能力                        │
+│  例：客服专员 = 意图识别 + 知识库检索 + 工单创建 + 满意度收集  │
+└─────────────────────────────────────────────────────────┘
+                           ▲
+                           │ 组装
+┌─────────────────────────────────────────────────────────┐
+│  Layer 1: Pack (能力层)                                   │
+│  最小能力单元，可独立安装、验证、替换                       │
+│  例：权限检查、审计日志、意图路由、上下文预热              │
+└─────────────────────────────────────────────────────────┘
 ```
 
-行为：
+### 核心概念
 
-- 若 `openclaw.json` 不存在，先从模板初始化。
-- 合并 Pack 的 `pack.openclaw.json` 到目标配置。
-- 复制 `src/.openclaw/skills/*` 到 `~/.openclaw/skills/`。
-- 去重处理数组字段，重复安装不产生副作用。
+| 概念 | 说明 | 类比 |
+|------|------|------|
+| **Pack** | 最小能力交付单元 | 员工的单项技能（如 Excel、PPT） |
+| **Bundle** | 多个 Pack 的岗位组合 | 完整岗位（如产品经理、客服专员） |
+| **Release** | 全量快照，可一键部署 | 员工入职档案（含所有能力和权限） |
+| **Hook** | 生命周期干预点 | 监督机制（如审批、审计、质量检查） |
+| **Contract** | 跨模块协作契约 | 部门间协作规范 |
 
-#### Release 安装（覆盖 + 自动备份）
+---
 
-```bash
-node scripts/release-install.mjs
-```
+## 示例 Packs（基础设施层）
 
-行为：
+这些 packs 不绑定任何业务场景，是**所有数字员工都需要的基础设施**。
 
-- 安装前自动备份 `~/.openclaw` 到 `.openclaw.backup-YYYYMMDD-HHMMSS`。
-- 覆盖安装新 Release。
-- 自动清理旧备份，仅保留最近 3 个。
+### 🔍 audit-core-pack - 审计与治理
 
-#### 回滚
-
-```bash
-pnpm openclaw-release -- rollback
-```
-
-行为：
-
-- 恢复最新备份为当前 `~/.openclaw`。
-
-### 6. 验证闭环
-
-基础验证脚本：
-
-```bash
-node scripts/pack-lint.mjs
-node scripts/verify-pack.mjs
-node scripts/release-install.mjs --dry-run
-```
-
-每个 Pack 在 `VERIFY.md` 至少要覆盖：
-
-- 结构验证：目录、`SKILL.md`、安装产物存在。
-- CLI 验证：`--help`、`--json`、exit code。
-- MCP 验证：server 可启动、tool 可列出、结构化输出合法。
-- 权限验证：所需 tool 在 allowlist，且不污染其他字段。
-- 幂等验证：重复安装无额外 diff。
-
-## 工程规范
-
-### 1. 技术栈
-
-- Node.js 20 LTS
-- pnpm 8+
-- TypeScript 5.x
-- tsx
-- Vitest
-- zod
-- eslint + prettier
-- GitHub Actions
-- Changesets（后续启用发布流）
-
-### 2. 提交规范（Commit Convention）
-
-推荐使用 Conventional Commits：
-
-- `feat:` 新能力
-- `fix:` 缺陷修复
-- `refactor:` 重构（无行为变更）
-- `docs:` 文档变更
-- `test:` 测试变更
-- `build:` 构建/依赖/CI
-- `chore:` 杂项维护
-
-建议格式：
-
-```text
-<type>(<scope>): <summary>
-```
-
-示例：
-
-- `feat(seo-pack): add keyword clustering workflow`
-- `fix(pack-install): ensure hooks array dedupe`
-- `docs(readme): define release rollback contract`
-- `build(ci): add release-dry-run gate`
-
-### 3. 分支与合并建议
-
-- 默认分支：`main`
-- 推荐短分支开发：`feat/*`、`fix/*`、`docs/*`
-- 合并前至少通过 CI：`typecheck/lint/test/build/pack-lint/release-dry-run`
-
-### 4. PR 验收清单
-
-每次 PR 建议自查：
-
-- 是否保持 Pack 增量安装原则。
-- 是否更新对应 `INSTALL.md` / `VERIFY.md`。
-- 是否补充必要契约（schema 或示例）。
-- 是否可回滚。
-- 是否无破坏性配置改动。
-
-## 基础设施 Packs 说明（新增）
-
-除了核心营销能力，本仓库还包含以下基础设施 Packs，用于解决系统治理、开发效率和用户体验问题：
-
-### audit-core-pack - 审计与权限治理
-
-**解决的问题：**
-- 工具调用无审计日志
-- 权限控制只在配置层，无法强制拦截
-- 无法追踪谁在什么时候用了什么工具
+**解决什么问题：**
+数字员工做了啥？有没有越权？出问题怎么追溯？
 
 **核心能力：**
 - 4 个生命周期 Hook（SessionStart/PreToolUse/PostToolUse/SessionEnd）
-- 工具权限检查（allow/deny 列表）
-- 敏感数据脱敏
-- 审计日志持久化
+- 工具权限检查（allow/deny 列表强制拦截）
+- 敏感数据自动脱敏
+- 完整审计日志
 
-**配套工具：**
-- `audit-trail` - CLI 查看审计日志
-- `audit-dashboard` - Web UI 可视化
+**使用场景：**
+- 金融合规：记录每个操作，满足监管要求
+- 企业安全：防止越权访问敏感数据
+- 质量追溯：出问题可回放完整操作链
 
-### skill-router-pack - 智能技能路由
-
-**解决的问题：**
-- 26 个 skill 用户不知道用哪个
-- 每次都要解释一遍 skill 的用途
-- 用户用自然语言描述需求，无法自动匹配
-
-**核心能力：**
-- 关键词匹配 + 正则模式识别
-- 置信度评分系统
-- Top 3 推荐 + 备选
-
-**使用效果：**
-```
-用户: "帮我写cold email开发客户"
-→ 推荐: cold-email (100% 置信度)
-```
-
-### hook-executor-pack - Hook 执行器
-
-**解决的问题：**
-- hooks 只在 `openclaw.json` 配置，OpenClaw Runtime 不执行
-- 工具治理无法落地
-
-**核心能力：**
-- 统一读取 hooks 配置并执行
-- PreToolUse 可阻断工具调用
-- 收集执行结果
-
-**与 audit-core-pack 配合：**
 ```json
 {
+  "tools": { "deny": ["exec", "system_command"] },
   "hooks": {
     "PreToolUse": ["./audit-core-pack/hooks/preToolUse.mjs"]
   }
 }
 ```
 
-### context-preloader-pack - 上下文预热
+### 🎯 skill-router-pack - 意图路由
 
-**解决的问题：**
-- 每个 skill 都要重复读取 product-marketing-context
-- 用户重复回答相同问题
-
-**核心能力：**
-- SessionStart 自动加载上下文文件
-- 生成压缩后的 context prompt
-- 后续 skills 自动获得上下文
-
-**加载的文件：**
-- `.openclaw/product-marketing-context.md`
-- `.openclaw/content-strategy.md`
-- `.openclaw/analytics-tracking-plan.md`
-
-### pseo-pipeline-pack - PSEO 全流程闭环
-
-**解决的问题：**
-- content-strategy 和 programmatic-seo 割裂
-- 从关键词到内容到排名追踪无自动化
+**解决什么问题：**
+用户说"帮我处理一下"，数字员工不知道用哪个技能。
 
 **核心能力：**
-5 步流程：关键词研究 → 模板设计 → 内容生成 → 发布计划 → 排名追踪
+- 自然语言意图识别
+- 置信度评分系统
+- Top-N 推荐 + 备选方案
 
-**输出示例：**
+**使用场景：**
+- 多技能数字员工：自动路由到正确技能
+- 降低用户学习成本：无需记住技能名称
+- 新技能自动发现：配置即生效
+
 ```bash
-$ node pseo-pipeline.mjs "ecommerce-seo" "shopify seo,dtc marketing"
-
-✓ 3 个关键词机会 (10,337 月搜索量)
-✓ 内容模板结构 (6 sections, 2500字)
-✓ 3 篇文章计划 (7500 字)
-✓ 3 周发布时间表
-✓ 排名追踪配置 (Google US/UK)
+$ skill-router "帮我分析下数据"
+→ 推荐: data-analysis (92% 置信度)
+→ 备选: chart-generation, report-export
 ```
 
-### audit-dashboard-pack - 审计可视化
+### ⚡ hook-executor-pack - 执行引擎
 
-**解决的问题：**
-- CLI 查看审计日志不方便
-- 无法实时监控系统状态
+**解决什么问题：**
+配置了 hooks，但 OpenClaw Runtime 不执行，成了摆设。
 
 **核心能力：**
-- 深色主题 Web UI
-- 实时数据刷新
-- 会话列表、拒绝事件、工具统计
+- 统一 hook 执行入口
+- 支持阻断式拦截（PreToolUse 可阻止操作）
+- 执行结果收集与反馈
 
-**使用方法：**
+**使用场景：**
+- 权限硬拦截：未授权操作直接拒绝
+- 审计全覆盖：所有操作留痕
+- 动态策略：运行时调整行为
+
+### 🧠 context-preloader-pack - 上下文预热
+
+**解决什么问题：**
+每次对话都要重复交代背景信息，效率低下。
+
+**核心能力：**
+- SessionStart 自动加载上下文
+- 多文件合并与压缩
+- 后续技能自动继承
+
+**使用场景：**
+- 客户画像：自动加载客户历史记录
+- 项目背景：自动加载项目文档
+- 个人偏好：自动加载用户设置
+
+### 🔄 pseo-pipeline-pack - 工作流引擎（示例）
+
+**解决什么问题：**
+复杂任务需要多步骤协作，如何标准化流程？
+
+**核心能力：**
+- 5 步标准化工作流
+- 输入输出契约定义
+- 进度追踪与报告
+
+**使用场景：**
+- 内容生产：关键词→大纲→写作→发布→追踪
+- 数据分析：采集→清洗→分析→可视化→交付
+- 客户服务：接待→诊断→解决→回访→归档
+
+> 注：这是工作流引擎的示例实现，实际业务可参照此模式开发自己的 pipeline。
+
+### 📊 audit-dashboard-pack - 可视化监控
+
+**解决什么问题：**
+数字员工干得好不好？怎么直观看到？
+
+**核心能力：**
+- Web UI 实时监控
+- 会话列表与详情
+- 异常事件告警
+- 性能统计
+
+**使用场景：**
+- 运维监控：实时查看数字员工状态
+- 质量审计：快速定位问题会话
+- 管理报表：工作量与效率统计
+
+---
+
+## 快速开始
+
+### 1. 安装核心骨架
+
 ```bash
-node server.mjs
-open http://localhost:3456
+git clone https://github.com/1596941391qq/ai-openclaw-skeletons.git
+cd ai-openclaw-skeletons
+
+# 安装基础设施 packs
+node scripts/pack-install.mjs audit-core-pack
+node scripts/pack-install.mjs skill-router-pack
+node scripts/pack-install.mjs hook-executor-pack
+node scripts/pack-install.mjs context-preloader-pack
+```
+
+### 2. 创建你的第一个 Pack
+
+```bash
+mkdir Packs/my-first-pack
+cat > Packs/my-first-pack/pack.openclaw.json << 'EOF'
+{
+  "skills": {
+    "my-skill": {
+      "source": "your-repo/my-skill",
+      "enabled": true
+    }
+  },
+  "hooks": {
+    "SessionStart": []
+  }
+}
+EOF
+```
+
+### 3. 打包成 Bundle（可选）
+
+```bash
+# 创建客服专员岗位
+cat > Bundles/CustomerService/bundle.json << 'EOF'
+{
+  "name": "CustomerService",
+  "description": "24小时客服专员数字员工",
+  "packs": [
+    "audit-core-pack",
+    "skill-router-pack",
+    "intent-recognition-pack",
+    "knowledge-base-pack",
+    "ticket-system-pack"
+  ]
+}
+EOF
+```
+
+### 4. 发布 Release
+
+```bash
+# 创建可部署镜像
+node scripts/release-install.mjs --name "customer-service-v1.0"
+
+# 回滚（如有问题）
+node scripts/release-install.mjs --rollback
 ```
 
 ---
 
-## 新增一个 Pack 的标准流程
+## 开发规范
 
-1. 在 `Packs/<name>/` 创建最小骨架：
-   - `README.md`
-   - `INSTALL.md`
-   - `VERIFY.md`
-   - `pack.openclaw.json`
-   - `src/.openclaw/skills/<SkillName>/SKILL.md`
-2. 在 `pack.openclaw.json` 仅声明该 Pack 的增量配置。
-3. 如需组合交付，更新 `Bundles/<BundleName>/bundle.json`。
-4. 补齐验证步骤并执行本地验证脚本。
-5. 提交 PR，通过 CI 后合并。
+### Pack 开发清单
 
-## 仓库边界（与其他仓库的关系）
+- [ ] `pack.openclaw.json` - 配置声明
+- [ ] `README.md` - 说明文档
+- [ ] `VERIFY.md` - 验证步骤
+- [ ] 增量合并原则 - 不覆盖其他配置
+- [ ] 幂等性 - 重复安装无副作用
 
-本仓库建议作为三仓架构中的“能力仓”：
+### Hook 开发规范
 
-- 本仓库：核心骨架（Packs/Bundles/Releases/contracts）
-- 基础设施仓：K8s + OpenClaw 部署与运维
-- 业务仓：业务模块（例如 mksaas / serverless）
+```javascript
+// PreToolUse Hook 示例
+export default async function preToolUse(ctx) {
+  // 1. 权限检查
+  if (!isAllowed(ctx.tool)) {
+    throw new PermissionDenied(`Tool ${ctx.tool} not allowed`);
+  }
+  
+  // 2. 审计记录
+  await audit.log({...ctx, timestamp: Date.now()});
+  
+  // 3. 返回（阻断时 throw，放行时 return）
+  return { allowed: true };
+}
+```
 
-核心原则：
+### 命名约定
 
-- 能力与部署解耦
-- 能力与业务解耦
-- 通过契约协同，而不是通过隐式约定协同
+- Pack: `{功能}-pack`（如 `audit-core-pack`）
+- Skill: `{动词}-{名词}`（如 `route-skill`）
+- Hook: `{时机}-{动作}`（如 `pre-check-permission`）
+- Bundle: `{岗位名称}`（如 `CustomerService`）
+
+---
+
+## 生产部署
+
+### 最小部署
+
+```yaml
+# docker-compose.yml
+version: '3'
+services:
+  openclaw:
+    image: openclaw/runtime:latest
+    volumes:
+      - ./.openclaw:/root/.openclaw
+    environment:
+      - OPENCLAW_CONFIG=/root/.openclaw/openclaw.json
+```
+
+### 高可用部署
+
+```yaml
+# k8s-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: digital-worker
+spec:
+  replicas: 3
+  template:
+    spec:
+      containers:
+      - name: openclaw
+        image: openclaw/runtime:latest
+        volumeMounts:
+        - name: skeletons
+          mountPath: /root/.openclaw
+      volumes:
+      - name: skeletons
+        configMap:
+          name: openclaw-skeletons-release
+```
+
+---
+
+## 生态定位
+
+```
+┌────────────────────────────────────────────────────────┐
+│  应用层：具体数字员工（客服、销售、分析师、程序员）         │
+│  由各公司/团队基于骨架开发                                  │
+├────────────────────────────────────────────────────────┤
+│  骨架层：本仓库（OpenClaw Skeletons）                      │
+│  提供基础设施、开发规范、最佳实践                          │
+├────────────────────────────────────────────────────────┤
+│  运行时：OpenClaw Runtime                                  │
+│  执行数字员工的底层引擎                                    │
+├────────────────────────────────────────────────────────┤
+│  基础设施：模型、计算、存储、网络                          │
+│  GPU/LLM API/向量数据库/对象存储                           │
+└────────────────────────────────────────────────────────┘
+```
+
+**本仓库的定位：**
+- 不是业务代码（那是应用层的事）
+- 不是运行时（那是 OpenClaw 的事）
+- 是**数字员工的基础设施和开发规范**
+
+---
 
 ## 当前状态
 
-### 已完成的 Packs
+### 基础设施 Packs（6个）
 
-**核心营销能力（4个）：**
-- ✅ `seo-core-pack` - SEO 审计、PSEO、Schema、竞品分析
-- ✅ `ads-core-pack` - 付费广告、发布策略、定价、推荐计划
-- ✅ `social-core-pack` - 社媒内容、文案、邮件序列、冷邮件
-- ✅ `analytics-core-pack` - 追踪、A/B测试、CRO优化
+| Pack | 状态 | 说明 |
+|------|------|------|
+| audit-core-pack | ✅ | 审计、权限、治理 |
+| skill-router-pack | ✅ | 意图路由 |
+| hook-executor-pack | ✅ | Hook 执行引擎 |
+| context-preloader-pack | ✅ | 上下文预热 |
+| pseo-pipeline-pack | ✅ | 工作流引擎示例 |
+| audit-dashboard-pack | ✅ | 可视化监控 |
 
-**基础设施与优化（6个）：**
-- ✅ `audit-core-pack` - 审计、权限、工具治理
-- ✅ `skill-router-pack` - 智能技能路由
-- ✅ `hook-executor-pack` - Hook 执行器
-- ✅ `context-preloader-pack` - 上下文预热
-- ✅ `pseo-pipeline-pack` - PSEO 全流程闭环
-- ✅ `audit-dashboard-pack` - 审计可视化
+### 待开发（欢迎贡献）
 
-**Bundle：**
-- ✅ `MarketingDept` - 完整营销部门能力组合
+- [ ] memory-pack - 长期记忆管理
+- [ ] multi-agent-pack - 多智能体协作
+- [ ] schedule-pack - 定时任务调度
+- [ ] notification-pack - 通知推送中心
 
-**基础设施：**
-- ✅ 配置基线与合并脚本
-- ✅ release 备份与回滚机制
-- ✅ 最小 CI 验证流程
+---
 
-### 总计
+## 贡献指南
 
-- **36 个 Skills**（26 营销 + 6 基础设施 + 4 工具）
-- **10 个 Packs**（4 核心 + 6 基础设施）
-- **1 个 Bundle**
+### 提交新 Pack
 
-### 后续建议优先级
+1. Fork 本仓库
+2. 在 `Packs/` 下创建 `{name}-pack/`
+3. 实现 `pack.openclaw.json` 和 `README.md`
+4. 通过验证脚本
+5. 提交 PR
 
-1. **生产验证** - 在真实 OpenClaw 环境中验证 Hook 执行器
-2. **性能优化** - 大规模内容生成时的性能调优
-3. **扩展能力** - 接入更多渠道（TikTok、Discord 等）
+### 代码规范
+
+```
+feat(pack): 新增 XXX 能力
+fix(hook): 修复权限检查 bug  
+docs(readme): 更新部署说明
+refactor(executor): 优化执行性能
+```
+
+---
+
+## 许可证
+
+MIT - 可自由用于商业和非商业场景。
+
+但请记住：**能力越大，责任越大。**
+
+数字员工不是玩具，部署到生产环境前请充分测试和审计。
+
+---
+
+## 相关资源
+
+- **参考实现：** [ai-openclaw-skeletons-dev](https://github.com/1596941391qq/ai-openclaw-skeletons-dev)（私有，含完整 skill 代码）
+- **OpenClaw 官方：** https://openclaw.ai
+- **讨论区：** GitHub Discussions
+
+---
+
+**准备好雇佣你的第一个数字员工了吗？** 🚀
