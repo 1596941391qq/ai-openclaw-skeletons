@@ -390,6 +390,11 @@ spec:
 | gh-pages-publisher-pack | ✅ | GitHub Pages + UniFuncs 发布 |
 | schedule-pack | ✅ | 定时任务调度 |
 
+#### 可观测性层
+| Pack | 状态 | 说明 |
+|------|------|------|
+| token-usage-reporter-pack | ✅ | Token 使用监控与报告 |
+
 ### Bundles（1个）
 
 | Bundle | 版本 | 包含 Packs | 说明 |
@@ -403,7 +408,7 @@ spec:
 
 ### 总计
 
-- **9 个基础设施 Packs**
+- **10 个基础设施 Packs**
 - **1 个业务 Bundle (PSEO)**
 - **7 步完整工作流** (关键词→内容→发布→索引)
 
