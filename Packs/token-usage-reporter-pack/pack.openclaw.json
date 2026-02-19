@@ -2,14 +2,19 @@
   "tools": { "allow": [], "deny": [] },
   "mcpServers": {},
   "hooks": {
-    "SessionStart": [],
-    "PreToolUse": [],
-    "PostToolUse": [
-      "./hooks/token-usage/postToolUse.mjs"
-    ],
-    "SessionEnd": [
-      "./hooks/token-usage/sessionEnd.mjs"
-    ]
+    "internal": {
+      "enabled": true,
+      "handlers": [
+        {
+          "event": "after_tool_call",
+          "module": "./hooks/token-usage/postToolUse.mjs"
+        },
+        {
+          "event": "session_end",
+          "module": "./hooks/token-usage/sessionEnd.mjs"
+        }
+      ]
+    }
   },
   "skills": {
     "token-usage-reporter": {
