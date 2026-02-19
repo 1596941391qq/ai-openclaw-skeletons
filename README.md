@@ -371,22 +371,46 @@ spec:
 
 ## 当前状态
 
-### 基础设施 Packs（6个）
+### 基础设施 Packs（9个）
 
+#### 核心治理层
 | Pack | 状态 | 说明 |
 |------|------|------|
-| audit-core-pack | ✅ | 审计、权限、治理 |
-| skill-router-pack | ✅ | 意图路由 |
+| audit-core-pack | ✅ | 审计、权限、工具治理 |
+| skill-router-pack | ✅ | 智能意图路由 |
 | hook-executor-pack | ✅ | Hook 执行引擎 |
 | context-preloader-pack | ✅ | 上下文预热 |
-| pseo-pipeline-pack | ✅ | 工作流引擎示例 |
 | audit-dashboard-pack | ✅ | 可视化监控 |
+
+#### 工作流与发布层
+| Pack | 状态 | 说明 |
+|------|------|------|
+| pseo-pipeline-pack | ✅ | PSEO 工作流引擎 |
+| content-generator-pack | ✅ | 内容生成器 |
+| gh-pages-publisher-pack | ✅ | GitHub Pages + UniFuncs 发布 |
+| schedule-pack | ✅ | 定时任务调度 |
+
+### Bundles（1个）
+
+| Bundle | 版本 | 包含 Packs | 说明 |
+|--------|------|-----------|------|
+| PSEO | v1.1.0 | 5 packs | 完整链路：关键词→内容→发布→索引 |
+
+### 架构层次
+
+- **Layer 1**: Product Marketing Context (产品营销上下文)
+- **Layer 2**: Campaign Ops Context (营销活动上下文)
+
+### 总计
+
+- **9 个基础设施 Packs**
+- **1 个业务 Bundle (PSEO)**
+- **7 步完整工作流** (关键词→内容→发布→索引)
 
 ### 待开发（欢迎贡献）
 
 - [ ] memory-pack - 长期记忆管理
 - [ ] multi-agent-pack - 多智能体协作
-- [ ] schedule-pack - 定时任务调度
 - [ ] notification-pack - 通知推送中心
 
 ---
