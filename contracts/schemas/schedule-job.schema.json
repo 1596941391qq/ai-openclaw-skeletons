@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Scheduled Job",
+  "type": "object",
+  "required": ["job_id", "cron", "workflow", "enabled"],
+  "properties": {
+    "job_id": { "type": "string" },
+    "cron": { "type": "string" },
+    "workflow": { "type": "string" },
+    "input": { "type": "object" },
+    "timeout_sec": { "type": "integer", "minimum": 1 },
+    "retry": { "type": "integer", "minimum": 0 },
+    "enabled": { "type": "boolean" }
+  },
+  "additionalProperties": false
+}

@@ -431,3 +431,25 @@ MIT - 可自由用于商业和非商业场景。
 ---
 
 **准备好雇佣你的第一个数字员工了吗？** 🚀
+
+---
+
+## Talos-Style Structured State (Added)
+
+This skeleton now includes:
+
+- Dual-layer context files and schemas:
+  - Layer 1: `product-marketing-context.(md|json)`
+  - Layer 2: `campaign-ops-context.(md|json)`
+- Structured schedule contract:
+  - `contracts/schemas/schedule-job.schema.json`
+  - `schedules` field in `openclaw.json`
+- Decision/audit contract:
+  - `contracts/schemas/decision-log.schema.json`
+- New infrastructure pack:
+  - `Packs/schedule-pack`
+
+Design principle:
+
+- Markdown for human readability.
+- JSON for deterministic machine validation and automation.

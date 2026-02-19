@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Layer2 Campaign Ops Context",
+  "type": "object",
+  "required": ["version", "sprint", "campaigns", "experiments", "signals", "next_actions"],
+  "properties": {
+    "version": { "type": "string" },
+    "sprint": {
+      "type": "object",
+      "required": ["objective", "kpi", "window"],
+      "properties": {
+        "objective": { "type": "string" },
+        "kpi": { "type": "string" },
+        "window": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "campaigns": { "type": "array", "items": { "type": "object" } },
+    "experiments": { "type": "array", "items": { "type": "object" } },
+    "signals": { "type": "array", "items": { "type": "object" } },
+    "next_actions": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": false
+}

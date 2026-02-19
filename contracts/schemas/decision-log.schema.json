@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Decision Log Entry",
+  "type": "object",
+  "required": ["ts", "actor", "action", "reason", "result"],
+  "properties": {
+    "ts": { "type": "string" },
+    "actor": { "type": "string" },
+    "action": { "type": "string" },
+    "reason": { "type": "string" },
+    "result": { "type": "string" },
+    "refs": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": false
+}

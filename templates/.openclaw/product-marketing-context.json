@@ -1,0 +1,24 @@
+{
+  "version": "1.0.0",
+  "product": {
+    "name": "",
+    "one_liner": "",
+    "category": "",
+    "business_model": ""
+  },
+  "target_audience": {
+    "icp": "",
+    "personas": [],
+    "jobs_to_be_done": []
+  },
+  "brand_voice": {
+    "tone": "",
+    "do_use": [],
+    "avoid": []
+  },
+  "positioning": {
+    "problem": "",
+    "differentiation": [],
+    "proof": []
+  }
+}

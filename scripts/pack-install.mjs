@@ -1,4 +1,4 @@
-﻿import { cpSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import os from "node:os";
 
@@ -47,6 +47,14 @@ for (const hook of hookNames) {
 const prevContext = Array.isArray(cfg.contextFiles) ? cfg.contextFiles : [];
 const nextContext = Array.isArray(patch.contextFiles) ? patch.contextFiles : [];
 cfg.contextFiles = unique([...prevContext, ...nextContext]);
+
+const prevSchedules = Array.isArray(cfg.schedules) ? cfg.schedules : [];
+const nextSchedules = Array.isArray(patch.schedules) ? patch.schedules : [];
+const scheduleMap = new Map(prevSchedules.map((j) => [j.job_id, j]));
+for (const job of nextSchedules) {
+  if (job?.job_id) scheduleMap.set(job.job_id, { ...(scheduleMap.get(job.job_id) ?? {}), ...job });
+}
+cfg.schedules = Array.from(scheduleMap.values());
 
 writeFileSync(targetCfgPath, `${JSON.stringify(cfg, null, 2)}\n`, "utf8");
 

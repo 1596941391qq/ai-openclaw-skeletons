@@ -11,5 +11,12 @@
     "SessionEnd": []
   },
   "skills": {},
-  "profiles": {}
+  "profiles": {},
+  "contextFiles": [
+    "product-marketing-context.md",
+    "campaign-ops-context.md",
+    "product-marketing-context.json",
+    "campaign-ops-context.json"
+  ],
+  "schedules": []
 }

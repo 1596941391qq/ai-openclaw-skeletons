@@ -1,72 +1,139 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "OpenClaw Config",
-  "type": "object",
-  "required": ["tools", "mcpServers", "hooks", "skills", "profiles"],
-  "properties": {
-    "tools": {
-      "type": "object",
-      "required": ["allow", "deny"],
-      "properties": {
-        "allow": {
-          "type": "array",
-          "items": { "type": "string" },
-          "uniqueItems": true
-        },
-        "deny": {
-          "type": "array",
-          "items": { "type": "string" },
-          "uniqueItems": true
-        }
-      },
-      "additionalProperties": false
-    },
-    "mcpServers": {
-      "type": "object",
-      "additionalProperties": {
-        "type": "object",
-        "required": ["command", "args", "env", "transport"],
-        "properties": {
-          "command": { "type": "string" },
-          "args": {
-            "type": "array",
-            "items": { "type": "string" }
-          },
-          "env": {
-            "type": "object",
-            "additionalProperties": { "type": "string" }
-          },
-          "transport": {
-            "type": "string",
-            "enum": ["stdio", "http", "sse"]
-          }
-        },
-        "additionalProperties": false
-      }
-    },
-    "hooks": {
-      "type": "object",
-      "required": ["SessionStart", "PreToolUse", "PostToolUse", "SessionEnd"],
-      "properties": {
-        "SessionStart": { "type": "array", "items": { "type": "string" } },
-        "PreToolUse": { "type": "array", "items": { "type": "string" } },
-        "PostToolUse": { "type": "array", "items": { "type": "string" } },
-        "SessionEnd": { "type": "array", "items": { "type": "string" } }
-      },
-      "additionalProperties": false
-    },
-    "skills": {
-      "type": "object",
-      "additionalProperties": {
-        "type": "object"
-      }
-    },
-    "profiles": {
-      "type": "object",
-      "additionalProperties": {
-        "type": "object"
-      }
-    }
-  },
-  "additionalProperties": false
+    "$schema":  "https://json-schema.org/draft/2020-12/schema",
+    "title":  "OpenClaw Config",
+    "type":  "object",
+    "required":  [
+                     "tools",
+                     "mcpServers",
+                     "hooks",
+                     "skills",
+                     "profiles",
+                     "contextFiles",
+                     "schedules"
+                 ],
+    "properties":  {
+                       "tools":  {
+                                     "type":  "object",
+                                     "required":  [
+                                                      "allow",
+                                                      "deny"
+                                                  ],
+                                     "properties":  {
+                                                        "allow":  {
+                                                                      "type":  "array",
+                                                                      "items":  {
+                                                                                    "type":  "string"
+                                                                                },
+                                                                      "uniqueItems":  true
+                                                                  },
+                                                        "deny":  {
+                                                                     "type":  "array",
+                                                                     "items":  {
+                                                                                   "type":  "string"
+                                                                               },
+                                                                     "uniqueItems":  true
+                                                                 }
+                                                    },
+                                     "additionalProperties":  false
+                                 },
+                       "mcpServers":  {
+                                          "type":  "object",
+                                          "additionalProperties":  {
+                                                                       "type":  "object",
+                                                                       "required":  [
+                                                                                        "command",
+                                                                                        "args",
+                                                                                        "env",
+                                                                                        "transport"
+                                                                                    ],
+                                                                       "properties":  {
+                                                                                          "command":  {
+                                                                                                          "type":  "string"
+                                                                                                      },
+                                                                                          "args":  {
+                                                                                                       "type":  "array",
+                                                                                                       "items":  {
+                                                                                                                     "type":  "string"
+                                                                                                                 }
+                                                                                                   },
+                                                                                          "env":  {
+                                                                                                      "type":  "object",
+                                                                                                      "additionalProperties":  {
+                                                                                                                                   "type":  "string"
+                                                                                                                               }
+                                                                                                  },
+                                                                                          "transport":  {
+                                                                                                            "type":  "string",
+                                                                                                            "enum":  [
+                                                                                                                         "stdio",
+                                                                                                                         "http",
+                                                                                                                         "sse"
+                                                                                                                     ]
+                                                                                                        }
+                                                                                      },
+                                                                       "additionalProperties":  false
+                                                                   }
+                                      },
+                       "hooks":  {
+                                     "type":  "object",
+                                     "required":  [
+                                                      "SessionStart",
+                                                      "PreToolUse",
+                                                      "PostToolUse",
+                                                      "SessionEnd"
+                                                  ],
+                                     "properties":  {
+                                                        "SessionStart":  {
+                                                                             "type":  "array",
+                                                                             "items":  {
+                                                                                           "type":  "string"
+                                                                                       }
+                                                                         },
+                                                        "PreToolUse":  {
+                                                                           "type":  "array",
+                                                                           "items":  {
+                                                                                         "type":  "string"
+                                                                                     }
+                                                                       },
+                                                        "PostToolUse":  {
+                                                                            "type":  "array",
+                                                                            "items":  {
+                                                                                          "type":  "string"
+                                                                                      }
+                                                                        },
+                                                        "SessionEnd":  {
+                                                                           "type":  "array",
+                                                                           "items":  {
+                                                                                         "type":  "string"
+                                                                                     }
+                                                                       }
+                                                    },
+                                     "additionalProperties":  false
+                                 },
+                       "skills":  {
+                                      "type":  "object",
+                                      "additionalProperties":  {
+                                                                   "type":  "object"
+                                                               }
+                                  },
+                       "profiles":  {
+                                        "type":  "object",
+                                        "additionalProperties":  {
+                                                                     "type":  "object"
+                                                                 }
+                                    },
+                       "contextFiles":  {
+                                            "items":  {
+                                                          "type":  "string"
+                                                      },
+                                            "type":  "array"
+                                        },
+                       "schedules":  {
+                                         "items":  {
+                                                       "$ref":  "./schedule-job.schema.json"
+                                                   },
+                                         "type":  "array"
+                                     }
+                   },
+    "additionalProperties":  false
 }

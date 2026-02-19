@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Layer1 Product Marketing Context",
+  "type": "object",
+  "required": ["version", "product", "target_audience", "brand_voice", "positioning"],
+  "properties": {
+    "version": { "type": "string" },
+    "product": {
+      "type": "object",
+      "required": ["name", "one_liner", "category", "business_model"],
+      "properties": {
+        "name": { "type": "string" },
+        "one_liner": { "type": "string" },
+        "category": { "type": "string" },
+        "business_model": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "target_audience": {
+      "type": "object",
+      "required": ["icp", "personas", "jobs_to_be_done"],
+      "properties": {
+        "icp": { "type": "string" },
+        "personas": { "type": "array", "items": { "type": "string" } },
+        "jobs_to_be_done": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "brand_voice": {
+      "type": "object",
+      "required": ["tone", "do_use", "avoid"],
+      "properties": {
+        "tone": { "type": "string" },
+        "do_use": { "type": "array", "items": { "type": "string" } },
+        "avoid": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "positioning": {
+      "type": "object",
+      "required": ["problem", "differentiation", "proof"],
+      "properties": {
+        "problem": { "type": "string" },
+        "differentiation": { "type": "array", "items": { "type": "string" } },
+        "proof": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

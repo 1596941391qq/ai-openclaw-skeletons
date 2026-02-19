@@ -1,0 +1,31 @@
+{
+  "tools": { "allow": [], "deny": [] },
+  "mcpServers": {},
+  "hooks": {
+    "SessionStart": [],
+    "PreToolUse": [],
+    "PostToolUse": [],
+    "SessionEnd": []
+  },
+  "skills": {
+    "schedule-manager": {
+      "enabled": true,
+      "source": "internal/openclaw"
+    }
+  },
+  "contextFiles": [
+    "campaign-ops-context.md",
+    "campaign-ops-context.json"
+  ],
+  "schedules": [
+    {
+      "job_id": "daily-marketing-summary",
+      "cron": "0 9 * * *",
+      "workflow": "daily-summary",
+      "input": { "scope": "marketing" },
+      "timeout_sec": 300,
+      "retry": 2,
+      "enabled": false
+    }
+  ]
+}
