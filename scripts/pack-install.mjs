@@ -15,7 +15,7 @@ for (let i = 0; i < args.length; i += 1) {
 }
 
 const packRoot = join(process.cwd(), "Packs", packName);
-const skillSrc = join(packRoot, "src", ".openclaw", "skills");
+const openclawSrc = join(packRoot, "src", ".openclaw");
 const packCfgPath = join(packRoot, "pack.openclaw.json");
 const baselinePath = join(process.cwd(), "templates", ".openclaw", "openclaw.json");
 const targetCfgPath = join(target, "openclaw.json");
@@ -58,10 +58,8 @@ cfg.schedules = Array.from(scheduleMap.values());
 
 writeFileSync(targetCfgPath, `${JSON.stringify(cfg, null, 2)}\n`, "utf8");
 
-if (existsSync(skillSrc)) {
-  const targetSkills = join(target, "skills");
-  mkdirSync(targetSkills, { recursive: true });
-  cpSync(skillSrc, targetSkills, { recursive: true, force: true });
+if (existsSync(openclawSrc)) {
+  cpSync(openclawSrc, target, { recursive: true, force: true });
 }
 
 console.log(`[pack-install] installed ${packName} to ${target}`);

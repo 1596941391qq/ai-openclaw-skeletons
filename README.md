@@ -476,4 +476,32 @@ This skeleton now includes:
 Design principle:
 
 - Markdown for human readability.
+<<<<<<< HEAD
 - JSON for deterministic machine validation and automation.
+=======
+- JSON for deterministic machine validation and automation.
+
+---
+
+## Automatic Token Usage Reporting (Added)
+
+Install:
+
+```bash
+node scripts/pack-install.mjs token-usage-reporter-pack
+```
+
+What happens automatically:
+
+- `PostToolUse` hook appends token usage events to:
+  - `.openclaw/logs/token-usage.jsonl`
+- `SessionEnd` hook writes aggregated report to:
+  - `.openclaw/reports/token-usage-latest.json`
+
+Behavior:
+
+- Uses provider token fields when available.
+- Falls back to deterministic estimation when missing.
+
+This follows the Talos-style lifecycle accounting approach: collect at execution boundary, report at lifecycle boundary.
+>>>>>>> 181e6fb (feat(observability): add lifecycle token usage reporter pack)

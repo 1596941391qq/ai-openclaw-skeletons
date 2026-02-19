@@ -1,0 +1,24 @@
+{
+  "tools": { "allow": [], "deny": [] },
+  "mcpServers": {},
+  "hooks": {
+    "SessionStart": [],
+    "PreToolUse": [],
+    "PostToolUse": [
+      "./hooks/token-usage/postToolUse.mjs"
+    ],
+    "SessionEnd": [
+      "./hooks/token-usage/sessionEnd.mjs"
+    ]
+  },
+  "skills": {
+    "token-usage-reporter": {
+      "enabled": true,
+      "source": "internal/openclaw"
+    }
+  },
+  "contextFiles": [
+    "reports/token-usage-latest.json"
+  ],
+  "schedules": []
+}
