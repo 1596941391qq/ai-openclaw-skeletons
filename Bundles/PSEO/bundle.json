@@ -1,0 +1,44 @@
+{
+  "name": "PSEO",
+  "description": "Complete Programmatic SEO workflow: keyword research → content generation → publishing → indexing",
+  "version": "1.0.0",
+  "packs": [
+    "pseo-pipeline-pack",
+    "content-generator-pack",
+    "gh-pages-publisher-pack",
+    "audit-core-pack"
+  ],
+  "workflow": {
+    "steps": [
+      {
+        "name": "keyword-research",
+        "pack": "pseo-pipeline-pack",
+        "description": "Research keywords and create content plan"
+      },
+      {
+        "name": "content-generation",
+        "pack": "content-generator-pack",
+        "description": "Generate full articles from outlines"
+      },
+      {
+        "name": "publishing",
+        "pack": "gh-pages-publisher-pack",
+        "description": "Publish to GitHub Pages and push to UniFuncs"
+      },
+      {
+        "name": "audit",
+        "pack": "audit-core-pack",
+        "description": "Record all operations for compliance"
+      }
+    ]
+  },
+  "quickstart": {
+    "one_liner": "帮我发一篇PSEO文章",
+    "full_command": "pseo publish --keyword 'your-keyword' --project 'your-project'",
+    "manual_steps": [
+      "node pseo-pipeline.mjs 'project-name' 'keyword1,keyword2,keyword3'",
+      "node content-generator/generate.mjs ~/.openclaw/pseo-projects/project-name/pseo-project.json ./generated",
+      "./cil/cil-gh-pages-publisher.sh publish --keyword 'keyword1' --article_md './generated/keyword1.md' --setting_file './setting.json'"
+    ]
+  }
+}

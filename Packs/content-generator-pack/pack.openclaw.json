@@ -1,0 +1,20 @@
+{
+  "tools": {
+    "allow": [],
+    "deny": []
+  },
+  "mcpServers": {},
+  "hooks": {
+    "SessionStart": [],
+    "PreToolUse": [],
+    "PostToolUse": [],
+    "SessionEnd": []
+  },
+  "skills": {
+    "content-generator": {
+      "source": "github.com/1596941391qq/gh-pages-unifuncs-publisher",
+      "enabled": true
+    }
+  },
+  "contextFiles": []
+}
