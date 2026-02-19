@@ -34,10 +34,18 @@
 ```text
 ai-openclaw-skeletons/
   Packs/
+    # 核心营销能力
     seo-core-pack/
     ads-core-pack/
     social-core-pack/
     analytics-core-pack/
+    # 基础设施与优化
+    audit-core-pack/          # 审计、权限、工具治理
+    skill-router-pack/        # 智能技能路由
+    hook-executor-pack/       # Hook 执行器
+    context-preloader-pack/   # 上下文预热
+    pseo-pipeline-pack/       # PSEO 全流程闭环
+    audit-dashboard-pack/     # 审计可视化
   Bundles/
     MarketingDept/
       bundle.json
@@ -263,6 +271,120 @@ node scripts/release-install.mjs --dry-run
 - 是否可回滚。
 - 是否无破坏性配置改动。
 
+## 基础设施 Packs 说明（新增）
+
+除了核心营销能力，本仓库还包含以下基础设施 Packs，用于解决系统治理、开发效率和用户体验问题：
+
+### audit-core-pack - 审计与权限治理
+
+**解决的问题：**
+- 工具调用无审计日志
+- 权限控制只在配置层，无法强制拦截
+- 无法追踪谁在什么时候用了什么工具
+
+**核心能力：**
+- 4 个生命周期 Hook（SessionStart/PreToolUse/PostToolUse/SessionEnd）
+- 工具权限检查（allow/deny 列表）
+- 敏感数据脱敏
+- 审计日志持久化
+
+**配套工具：**
+- `audit-trail` - CLI 查看审计日志
+- `audit-dashboard` - Web UI 可视化
+
+### skill-router-pack - 智能技能路由
+
+**解决的问题：**
+- 26 个 skill 用户不知道用哪个
+- 每次都要解释一遍 skill 的用途
+- 用户用自然语言描述需求，无法自动匹配
+
+**核心能力：**
+- 关键词匹配 + 正则模式识别
+- 置信度评分系统
+- Top 3 推荐 + 备选
+
+**使用效果：**
+```
+用户: "帮我写cold email开发客户"
+→ 推荐: cold-email (100% 置信度)
+```
+
+### hook-executor-pack - Hook 执行器
+
+**解决的问题：**
+- hooks 只在 `openclaw.json` 配置，OpenClaw Runtime 不执行
+- 工具治理无法落地
+
+**核心能力：**
+- 统一读取 hooks 配置并执行
+- PreToolUse 可阻断工具调用
+- 收集执行结果
+
+**与 audit-core-pack 配合：**
+```json
+{
+  "hooks": {
+    "PreToolUse": ["./audit-core-pack/hooks/preToolUse.mjs"]
+  }
+}
+```
+
+### context-preloader-pack - 上下文预热
+
+**解决的问题：**
+- 每个 skill 都要重复读取 product-marketing-context
+- 用户重复回答相同问题
+
+**核心能力：**
+- SessionStart 自动加载上下文文件
+- 生成压缩后的 context prompt
+- 后续 skills 自动获得上下文
+
+**加载的文件：**
+- `.openclaw/product-marketing-context.md`
+- `.openclaw/content-strategy.md`
+- `.openclaw/analytics-tracking-plan.md`
+
+### pseo-pipeline-pack - PSEO 全流程闭环
+
+**解决的问题：**
+- content-strategy 和 programmatic-seo 割裂
+- 从关键词到内容到排名追踪无自动化
+
+**核心能力：**
+5 步流程：关键词研究 → 模板设计 → 内容生成 → 发布计划 → 排名追踪
+
+**输出示例：**
+```bash
+$ node pseo-pipeline.mjs "ecommerce-seo" "shopify seo,dtc marketing"
+
+✓ 3 个关键词机会 (10,337 月搜索量)
+✓ 内容模板结构 (6 sections, 2500字)
+✓ 3 篇文章计划 (7500 字)
+✓ 3 周发布时间表
+✓ 排名追踪配置 (Google US/UK)
+```
+
+### audit-dashboard-pack - 审计可视化
+
+**解决的问题：**
+- CLI 查看审计日志不方便
+- 无法实时监控系统状态
+
+**核心能力：**
+- 深色主题 Web UI
+- 实时数据刷新
+- 会话列表、拒绝事件、工具统计
+
+**使用方法：**
+```bash
+node server.mjs
+open http://localhost:3456
+```
+
+---
+
 ## 新增一个 Pack 的标准流程
 
 1. 在 `Packs/<name>/` 创建最小骨架：
@@ -292,16 +414,38 @@ node scripts/release-install.mjs --dry-run
 
 ## 当前状态
 
-当前已初始化：
+### 已完成的 Packs
 
-- `MarketingDept` bundle 占位
-- `seo/ads/social/analytics` 四个 core pack 占位
-- 配置基线与合并脚本
-- release 备份与回滚机制
-- 最小 CI 验证流程
+**核心营销能力（4个）：**
+- ✅ `seo-core-pack` - SEO 审计、PSEO、Schema、竞品分析
+- ✅ `ads-core-pack` - 付费广告、发布策略、定价、推荐计划
+- ✅ `social-core-pack` - 社媒内容、文案、邮件序列、冷邮件
+- ✅ `analytics-core-pack` - 追踪、A/B测试、CRO优化
 
-后续建议优先级：
+**基础设施与优化（6个）：**
+- ✅ `audit-core-pack` - 审计、权限、工具治理
+- ✅ `skill-router-pack` - 智能技能路由
+- ✅ `hook-executor-pack` - Hook 执行器
+- ✅ `context-preloader-pack` - 上下文预热
+- ✅ `pseo-pipeline-pack` - PSEO 全流程闭环
+- ✅ `audit-dashboard-pack` - 审计可视化
 
-1. 先补 `seo-core-pack` 的真实 CLI + MCP + VERIFY 样例。
-2. 再补 `analytics-core-pack`，先把测量闭环打通。
-3. 最后把 `ads` 与 `social` 接入统一策略与事件回写。
+**Bundle：**
+- ✅ `MarketingDept` - 完整营销部门能力组合
+
+**基础设施：**
+- ✅ 配置基线与合并脚本
+- ✅ release 备份与回滚机制
+- ✅ 最小 CI 验证流程
+
+### 总计
+
+- **36 个 Skills**（26 营销 + 6 基础设施 + 4 工具）
+- **10 个 Packs**（4 核心 + 6 基础设施）
+- **1 个 Bundle**
+
+### 后续建议优先级
+
+1. **生产验证** - 在真实 OpenClaw 环境中验证 Hook 执行器
+2. **性能优化** - 大规模内容生成时的性能调优
+3. **扩展能力** - 接入更多渠道（TikTok、Discord 等）

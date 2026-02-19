@@ -1,0 +1,20 @@
+{
+  "tools": {
+    "allow": [],
+    "deny": []
+  },
+  "mcpServers": {},
+  "hooks": {
+    "SessionStart": ["./hooks/sessionStart.mjs"],
+    "PreToolUse": ["./hooks/preToolUse.mjs"],
+    "PostToolUse": ["./hooks/postToolUse.mjs"],
+    "SessionEnd": ["./hooks/sessionEnd.mjs"]
+  },
+  "skills": {
+    "audit-trail": {
+      "source": "github.com/1596941391qq/ai-openclaw-skeletons-dev",
+      "enabled": true
+    }
+  },
+  "contextFiles": []
+}
