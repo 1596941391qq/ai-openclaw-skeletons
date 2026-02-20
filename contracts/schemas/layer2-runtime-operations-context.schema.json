@@ -1,21 +1,21 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Layer2 Campaign Ops Context",
+  "title": "Layer2 Runtime Operations Context",
   "type": "object",
-  "required": ["version", "sprint", "campaigns", "experiments", "signals", "next_actions"],
+  "required": ["version", "window", "workstreams", "experiments", "signals", "next_actions"],
   "properties": {
     "version": { "type": "string" },
-    "sprint": {
+    "window": {
       "type": "object",
-      "required": ["objective", "kpi", "window"],
+      "required": ["objective", "kpi", "time_window"],
       "properties": {
         "objective": { "type": "string" },
         "kpi": { "type": "string" },
-        "window": { "type": "string" }
+        "time_window": { "type": "string" }
       },
       "additionalProperties": false
     },
-    "campaigns": { "type": "array", "items": { "type": "object" } },
+    "workstreams": { "type": "array", "items": { "type": "object" } },
     "experiments": { "type": "array", "items": { "type": "object" } },
     "signals": { "type": "array", "items": { "type": "object" } },
     "next_actions": { "type": "array", "items": { "type": "string" } }

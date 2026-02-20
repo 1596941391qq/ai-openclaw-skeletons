@@ -5,18 +5,26 @@
   },
   "mcpServers": {},
   "hooks": {
-    "SessionStart": [],
-    "PreToolUse": [],
-    "PostToolUse": [],
-    "SessionEnd": []
+    "internal": {
+      "enabled": true,
+      "load": {
+        "extraDirs": []
+      },
+      "entries": {},
+      "handlers": []
+    }
+  },
+  "plugins": {
+    "entries": {}
   },
   "skills": {},
   "profiles": {},
   "contextFiles": [
-    "product-marketing-context.md",
-    "campaign-ops-context.md",
-    "product-marketing-context.json",
-    "campaign-ops-context.json"
+    "core-strategy-context.md",
+    "runtime-operations-context.md",
+    "core-strategy-context.json",
+    "runtime-operations-context.json"
   ],
   "schedules": []
 }
+

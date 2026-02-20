@@ -1,22 +1,22 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Layer1 Product Marketing Context",
+  "title": "Layer1 Core Strategy Context",
   "type": "object",
-  "required": ["version", "product", "target_audience", "brand_voice", "positioning"],
+  "required": ["version", "mission", "primary_users", "voice_and_policy", "positioning"],
   "properties": {
     "version": { "type": "string" },
-    "product": {
+    "mission": {
       "type": "object",
-      "required": ["name", "one_liner", "category", "business_model"],
+      "required": ["name", "one_liner", "domain", "operating_model"],
       "properties": {
         "name": { "type": "string" },
         "one_liner": { "type": "string" },
-        "category": { "type": "string" },
-        "business_model": { "type": "string" }
+        "domain": { "type": "string" },
+        "operating_model": { "type": "string" }
       },
       "additionalProperties": false
     },
-    "target_audience": {
+    "primary_users": {
       "type": "object",
       "required": ["icp", "personas", "jobs_to_be_done"],
       "properties": {
@@ -26,7 +26,7 @@
       },
       "additionalProperties": false
     },
-    "brand_voice": {
+    "voice_and_policy": {
       "type": "object",
       "required": ["tone", "do_use", "avoid"],
       "properties": {

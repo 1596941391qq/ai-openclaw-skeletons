@@ -32,17 +32,50 @@ const cfg = JSON.parse(readFileSync(targetCfgPath, "utf8"));
 const patch = JSON.parse(readFileSync(packCfgPath, "utf8"));
 const unique = (arr) => Array.from(new Set(arr));
 
+cfg.tools = cfg.tools ?? { allow: [], deny: [] };
 cfg.tools.allow = unique([...(cfg.tools.allow ?? []), ...(patch.tools?.allow ?? [])]);
 cfg.tools.deny = unique([...(cfg.tools.deny ?? []), ...(patch.tools?.deny ?? [])]);
 
 cfg.mcpServers = { ...(cfg.mcpServers ?? {}), ...(patch.mcpServers ?? {}) };
 cfg.skills = { ...(cfg.skills ?? {}), ...(patch.skills ?? {}) };
 
-const hookNames = ["SessionStart", "PreToolUse", "PostToolUse", "SessionEnd"];
+cfg.plugins = cfg.plugins ?? { entries: {} };
+cfg.plugins.entries = { ...(cfg.plugins.entries ?? {}), ...(patch.plugins?.entries ?? {}) };
+
 cfg.hooks = cfg.hooks ?? {};
-for (const hook of hookNames) {
-  cfg.hooks[hook] = unique([...(cfg.hooks[hook] ?? []), ...(patch.hooks?.[hook] ?? [])]);
+cfg.hooks.internal = cfg.hooks.internal ?? {
+  enabled: true,
+  load: { extraDirs: [] },
+  entries: {},
+  handlers: []
+};
+if (typeof patch.hooks?.internal?.enabled === "boolean") {
+  cfg.hooks.internal.enabled = patch.hooks.internal.enabled;
 }
+
+const prevExtraDirs = Array.isArray(cfg.hooks.internal.load?.extraDirs)
+  ? cfg.hooks.internal.load.extraDirs
+  : [];
+const nextExtraDirs = Array.isArray(patch.hooks?.internal?.load?.extraDirs)
+  ? patch.hooks.internal.load.extraDirs
+  : [];
+cfg.hooks.internal.load = { extraDirs: unique([...prevExtraDirs, ...nextExtraDirs]) };
+
+cfg.hooks.internal.entries = {
+  ...(cfg.hooks.internal.entries ?? {}),
+  ...(patch.hooks?.internal?.entries ?? {})
+};
+
+const prevHandlers = Array.isArray(cfg.hooks.internal.handlers) ? cfg.hooks.internal.handlers : [];
+const nextHandlers = Array.isArray(patch.hooks?.internal?.handlers)
+  ? patch.hooks.internal.handlers
+  : [];
+const handlersByKey = new Map();
+for (const h of [...prevHandlers, ...nextHandlers]) {
+  if (!h?.event || !h?.module) continue;
+  handlersByKey.set(`${h.event}::${h.module}`, h);
+}
+cfg.hooks.internal.handlers = Array.from(handlersByKey.values());
 
 const prevContext = Array.isArray(cfg.contextFiles) ? cfg.contextFiles : [];
 const nextContext = Array.isArray(patch.contextFiles) ? patch.contextFiles : [];

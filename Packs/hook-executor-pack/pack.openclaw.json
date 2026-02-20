@@ -5,10 +5,11 @@
   },
   "mcpServers": {},
   "hooks": {
-    "SessionStart": ["./hooks/executor.mjs"],
-    "PreToolUse": ["./hooks/executor.mjs"],
-    "PostToolUse": ["./hooks/executor.mjs"],
-    "SessionEnd": ["./hooks/executor.mjs"]
+    "internal": {
+      "enabled": true,
+      "entries": {},
+      "handlers": []
+    }
   },
   "skills": {
     "hook-executor": {

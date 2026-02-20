@@ -1,11 +1,15 @@
 {
-  "tools": { "allow": [], "deny": [] },
+  "tools": {
+    "allow": [],
+    "deny": []
+  },
   "mcpServers": {},
   "hooks": {
-    "SessionStart": [],
-    "PreToolUse": [],
-    "PostToolUse": [],
-    "SessionEnd": []
+    "internal": {
+      "enabled": true,
+      "entries": {},
+      "handlers": []
+    }
   },
   "skills": {
     "schedule-manager": {
@@ -14,8 +18,8 @@
     }
   },
   "contextFiles": [
-    "campaign-ops-context.md",
-    "campaign-ops-context.json"
+    "runtime-operations-context.md",
+    "runtime-operations-context.json"
   ],
   "schedules": [
     {
@@ -29,3 +33,4 @@
     }
   ]
 }
+

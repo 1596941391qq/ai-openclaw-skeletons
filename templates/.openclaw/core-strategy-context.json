@@ -1,17 +1,17 @@
 {
   "version": "1.0.0",
-  "product": {
+  "mission": {
     "name": "",
     "one_liner": "",
-    "category": "",
-    "business_model": ""
+    "domain": "",
+    "operating_model": ""
   },
-  "target_audience": {
+  "primary_users": {
     "icp": "",
     "personas": [],
     "jobs_to_be_done": []
   },
-  "brand_voice": {
+  "voice_and_policy": {
     "tone": "",
     "do_use": [],
     "avoid": []

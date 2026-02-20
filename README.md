@@ -1,4 +1,4 @@
-﻿# OpenClaw Skeletons
+# OpenClaw Skeletons
 
 面向 AI Agent 的**可插拔数字员工骨架系统**。
 
@@ -51,7 +51,7 @@ Agent: 直接发
 ```text
 用户: "帮我发个邮件"
 Agent:
-  1. 检查权限（PreToolUse Hook）
+  1. 检查权限（runtime hook 拦截）
   2. 加载上下文（Context Preloader）
   3. 路由到正确 skill（Skill Router）
   4. 执行并记录（Audit Trail）
@@ -156,6 +156,15 @@ mkdir Packs/my-first-pack
 - [ ] 增量合并原则 - 不覆盖其他配置
 - [ ] 幂等性 - 重复安装无副作用
 
+### Hook 配置约定（与 OpenClaw Runtime 对齐）
+
+统一使用 `hooks.internal` 结构：
+
+- `hooks.internal.enabled`
+- `hooks.internal.load.extraDirs`
+- `hooks.internal.entries`
+- `hooks.internal.handlers`（兼容模式）
+
 ### 命名约定
 
 - Pack: `{功能}-pack`（如 `audit-core-pack`）
@@ -212,3 +221,4 @@ MIT - 可自由用于商业和非商业场景。
 
 - OpenClaw 官方：https://openclaw.ai
 - GitHub Discussions
+

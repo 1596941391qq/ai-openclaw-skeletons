@@ -1,13 +1,13 @@
-# Campaign Ops Context
+# Runtime Operations Context
 
-## Sprint
+## Current Window
 - Objective:
 - KPI:
 - Time Window:
 
-## Active Campaigns
-| Campaign | Channel | Audience | Offer | KPI | Status |
-|----------|---------|----------|-------|-----|--------|
+## Active Workstreams
+| Workstream | Channel | Audience | Offer | KPI | Status |
+|------------|---------|----------|-------|-----|--------|
 
 ## Experiments
 | Experiment | Hypothesis | Metric | Owner | ETA | Status |

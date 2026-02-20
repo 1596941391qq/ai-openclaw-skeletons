@@ -5,10 +5,11 @@
   },
   "mcpServers": {},
   "hooks": {
-    "SessionStart": ["./hooks/preloadContext.mjs"],
-    "PreToolUse": [],
-    "PostToolUse": [],
-    "SessionEnd": []
+    "internal": {
+      "enabled": true,
+      "entries": {},
+      "handlers": []
+    }
   },
   "skills": {
     "context-preloader": {
@@ -17,7 +18,8 @@
     }
   },
   "contextFiles": [
-    ".openclaw/product-marketing-context.md",
-    ".openclaw/content-strategy.md"
+    ".openclaw/core-strategy-context.md",
+    ".openclaw/runtime-operations-context.md"
   ]
 }
+

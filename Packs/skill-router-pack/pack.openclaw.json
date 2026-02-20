@@ -5,10 +5,11 @@
   },
   "mcpServers": {},
   "hooks": {
-    "SessionStart": [],
-    "PreToolUse": [],
-    "PostToolUse": [],
-    "SessionEnd": []
+    "internal": {
+      "enabled": true,
+      "entries": {},
+      "handlers": []
+    }
   },
   "skills": {
     "skill-router": {

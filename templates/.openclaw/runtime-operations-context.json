@@ -1,11 +1,11 @@
 {
   "version": "1.0.0",
-  "sprint": {
+  "window": {
     "objective": "",
     "kpi": "",
-    "window": ""
+    "time_window": ""
   },
-  "campaigns": [],
+  "workstreams": [],
   "experiments": [],
   "signals": [],
   "next_actions": []

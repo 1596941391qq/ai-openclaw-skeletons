@@ -1,40 +1,31 @@
 # Context Preloader Pack
 
-## 用途
+会话前置上下文加载骨架。
 
-SessionStart 时自动加载 product-marketing-context，避免每个 skill 重复读取上下文。
+## 目标
 
-## 解决的问题
+- 在运行前加载稳定上下文与动态上下文
+- 减少重复说明，提升多 Skill 协作一致性
 
-**优化前:**
-- 用户: "帮我做 SEO 审计"
-- AI: "首先，你的目标客户是谁？"
-- （重复问答）
+## 默认上下文文件
 
-**优化后:**
-- 用户: "帮我做 SEO 审计"  
-- AI: "基于你的产品营销上下文（AI一体化出海解决方案），我建议..."
+1. `.openclaw/core-strategy-context.md`
+2. `.openclaw/runtime-operations-context.md`
 
-## 加载的文件
-
-1. `.openclaw/product-marketing-context.md`
-2. `.openclaw/content-strategy.md`
-3. `.openclaw/analytics-tracking-plan.md`
-
-## 配置示例
+## 配置示例（runtime 对齐）
 
 ```json
 {
   "hooks": {
-    "SessionStart": ["./hooks/preloadContext.mjs"]
+    "internal": {
+      "enabled": true,
+      "entries": {},
+      "handlers": []
+    }
   },
   "contextFiles": [
-    ".openclaw/product-marketing-context.md"
+    ".openclaw/core-strategy-context.md",
+    ".openclaw/runtime-operations-context.md"
   ]
 }
 ```
-
-## 实现说明
-
-实际代码位于:
-`github.com/1596941391qq/ai-openclaw-skeletons-dev/Packs/context-preloader-pack/`

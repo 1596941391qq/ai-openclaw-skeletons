@@ -1,7 +1,32 @@
 {
-  "tools": { "allow": [], "deny": [] },
+  "tools": {
+    "allow": [],
+    "deny": []
+  },
   "mcpServers": {},
-  "hooks": {},
+  "hooks": {
+    "internal": {
+      "enabled": true,
+      "load": {
+        "extraDirs": [
+          "./hooks"
+        ]
+      },
+      "entries": {},
+      "handlers": [
+        {
+          "event": "after_tool_call",
+          "module": "./hooks/token-usage/postToolUse.mjs",
+          "enabled": true
+        },
+        {
+          "event": "session_end",
+          "module": "./hooks/token-usage/sessionEnd.mjs",
+          "enabled": true
+        }
+      ]
+    }
+  },
   "plugins": {
     "entries": {
       "token-usage-reporter": {

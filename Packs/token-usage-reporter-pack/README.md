@@ -6,6 +6,7 @@ Lifecycle-level token accounting for OpenClaw runs.
 
 - `after_tool_call`: append token usage event (`.openclaw/logs/token-usage.jsonl`)
 - `session_end`: aggregate session totals and write report (`.openclaw/reports/token-usage-latest.json`)
+- supports runtime plugin mode and hooks.internal.handlers compatibility mode
 
 ## Installation
 
@@ -40,6 +41,4 @@ Or manually add to `~/.openclaw/openclaw.json`:
 
 ## Implementation
 
-This pack uses the OpenClaw Plugin API:
-- `plugin.js` - Main plugin entry point with typed hooks
-- Hooks: `after_tool_call`, `session_end`
+This pack can run via OpenClaw Plugin API and hook compatibility mode.
