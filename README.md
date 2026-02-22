@@ -222,3 +222,22 @@ MIT - 可自由用于商业和非商业场景。
 - OpenClaw 官方：https://openclaw.ai
 - GitHub Discussions
 
+
+---
+
+## 2026-02-22 增量更新（接入 STOP 协议能力）
+
+本次新增 `stop-observability-pack`，将 `stop-protocol` 的核心能力组合进 Skeleton：
+
+- `Manifest`：新增 `stop/agent-team.skill.json`，用于声明输入输出、副作用与断言规则。
+- `Trace`：通过 `after_tool_call` Hook 记录结构化 span，输出到 `.openclaw/logs/stop-spans.jsonl`，并在会话结束写入 `.openclaw/.sop/traces/`。
+- `Assertions`：按规则执行 post-check，结果输出到 `.openclaw/logs/stop-assertions.jsonl`。
+- `Session Report`：在 `session_end` 汇总 `by_tool / by_role / by_status`，输出 `.openclaw/reports/stop-latest-report.json`。
+
+此外，新增了 STOP 对应契约：
+
+- `contracts/schemas/stop-skill-manifest.schema.json`
+- `contracts/schemas/stop-trace-span.schema.json`
+- `contracts/schemas/stop-assertion-report.schema.json`
+
+这使项目具备了“类似 agent team”的可观测协作能力：可追踪 planner / executor / reviewer 的执行链路、工具调用和成功率。

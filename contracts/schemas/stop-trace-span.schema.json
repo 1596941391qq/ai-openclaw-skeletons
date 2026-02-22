@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.ai/contracts/schemas/stop-trace-span.schema.json",
+  "title": "STOP Trace Span",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "span_id",
+    "trace_id",
+    "start_time",
+    "kind",
+    "name",
+    "status",
+    "attributes"
+  ],
+  "properties": {
+    "span_id": {
+      "type": "string"
+    },
+    "trace_id": {
+      "type": "string"
+    },
+    "parent_span_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "start_time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "end_time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "duration_ms": {
+      "type": "number",
+      "minimum": 0
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "skill.execute",
+        "skill.input",
+        "skill.output",
+        "tool.call",
+        "tool.result",
+        "file.read",
+        "file.write",
+        "http.request",
+        "llm.reason",
+        "assertion.check",
+        "branch",
+        "custom"
+      ]
+    },
+    "name": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "ok",
+        "error",
+        "skipped"
+      ]
+    },
+    "attributes": {
+      "type": "object"
+    },
+    "error": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "stack": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

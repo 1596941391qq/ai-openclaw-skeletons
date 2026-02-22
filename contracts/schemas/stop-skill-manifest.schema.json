@@ -1,0 +1,199 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.ai/contracts/schemas/stop-skill-manifest.schema.json",
+  "title": "STOP Skill Manifest",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "sop",
+    "name",
+    "version",
+    "description"
+  ],
+  "properties": {
+    "sop": {
+      "type": "string",
+      "description": "STOP protocol version"
+    },
+    "name": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ioField"
+      }
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ioField"
+      }
+    },
+    "tools_used": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "side_effects": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/sideEffect"
+      }
+    },
+    "assertions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "pre": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/assertionRule"
+          }
+        },
+        "post": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/assertionRule"
+          }
+        }
+      }
+    },
+    "observability": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "level": {
+          "type": "string",
+          "enum": [
+            "L0",
+            "L1",
+            "L2",
+            "L3"
+          ]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "ioField": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "name",
+        "type"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "string",
+            "number",
+            "boolean",
+            "file_path",
+            "dir_path",
+            "url",
+            "json",
+            "array",
+            "enum"
+          ]
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "sideEffect": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "filesystem",
+            "network",
+            "message",
+            "exec",
+            "state"
+          ]
+        },
+        "access": {
+          "type": "string",
+          "enum": [
+            "read",
+            "write",
+            "delete"
+          ]
+        },
+        "description": {
+          "type": "string"
+        },
+        "paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "destinations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "assertionRule": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "check"
+      ],
+      "properties": {
+        "check": {
+          "type": "string"
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warn"
+          ]
+        },
+        "message": {
+          "type": "string"
+        },
+        "tool": {
+          "type": "string"
+        },
+        "max_ms": {
+          "type": "number"
+        },
+        "matches": {
+          "type": "string"
+        },
+        "greater_than": {
+          "type": "number"
+        },
+        "not_empty": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

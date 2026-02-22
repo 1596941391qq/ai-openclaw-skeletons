@@ -1,0 +1,64 @@
+{
+  "sop": "0.1",
+  "name": "agent-team-workflow",
+  "version": "1.0.0",
+  "description": "Planner / Executor / Reviewer multi-agent workflow with STOP observability",
+  "inputs": [
+    {
+      "name": "goal",
+      "type": "string",
+      "required": true,
+      "description": "Top-level objective from user"
+    },
+    {
+      "name": "plan",
+      "type": "array",
+      "required": false,
+      "description": "Task breakdown produced by planner role"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "result",
+      "type": "json",
+      "description": "Execution result payload"
+    },
+    {
+      "name": "review_summary",
+      "type": "string",
+      "description": "Reviewer conclusion for this run"
+    }
+  ],
+  "tools_used": [],
+  "side_effects": [
+    {
+      "type": "filesystem",
+      "access": "write",
+      "description": "Write structured spans and reports to .openclaw directory",
+      "paths": [
+        ".openclaw/logs/stop-spans.jsonl",
+        ".openclaw/logs/stop-assertions.jsonl",
+        ".openclaw/.sop/traces/*.jsonl",
+        ".openclaw/reports/stop-latest-report.json"
+      ]
+    }
+  ],
+  "assertions": {
+    "post": [
+      {
+        "check": "tool_success",
+        "severity": "error",
+        "message": "Tool execution must succeed"
+      },
+      {
+        "check": "duration",
+        "max_ms": 300000,
+        "severity": "warn",
+        "message": "Tool execution took too long"
+      }
+    ]
+  },
+  "observability": {
+    "level": "L2"
+  }
+}

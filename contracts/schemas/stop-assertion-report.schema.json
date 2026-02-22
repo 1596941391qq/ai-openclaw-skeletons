@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.ai/contracts/schemas/stop-assertion-report.schema.json",
+  "title": "STOP Assertion Report",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "ts",
+    "session_id",
+    "tool",
+    "result"
+  ],
+  "properties": {
+    "ts": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "session_id": {
+      "type": "string"
+    },
+    "task_id": {
+      "type": "string"
+    },
+    "tool": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string"
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "check",
+        "severity",
+        "status"
+      ],
+      "properties": {
+        "check": {
+          "type": "string"
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warn"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "pass",
+            "fail"
+          ]
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

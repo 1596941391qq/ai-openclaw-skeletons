@@ -1,0 +1,41 @@
+{
+  "tools": {
+    "allow": [],
+    "deny": []
+  },
+  "mcpServers": {},
+  "hooks": {
+    "internal": {
+      "enabled": true,
+      "load": {
+        "extraDirs": [
+          "./hooks"
+        ]
+      },
+      "entries": {},
+      "handlers": [
+        {
+          "event": "after_tool_call",
+          "module": "./hooks/stop-observability/postToolUse.mjs",
+          "enabled": true
+        },
+        {
+          "event": "session_end",
+          "module": "./hooks/stop-observability/sessionEnd.mjs",
+          "enabled": true
+        }
+      ]
+    }
+  },
+  "skills": {
+    "stop-observability-auditor": {
+      "enabled": true,
+      "source": "internal/openclaw"
+    }
+  },
+  "contextFiles": [
+    "reports/stop-latest-report.json",
+    "stop/agent-team.skill.json"
+  ],
+  "schedules": []
+}
