@@ -9,14 +9,18 @@
 确认存在并有内容：
 
 - `.openclaw/logs/stop-spans.jsonl`
+- `.openclaw/logs/stop-mcp-spans.jsonl`（如果本次调用了 MCP 工具）
 - `.openclaw/logs/stop-assertions.jsonl`
+- `.openclaw/logs/stop-guard-events.jsonl`
 
 ## 3. 结束会话后检查汇总
 
 确认存在：
 
 - `.openclaw/.sop/traces/*.jsonl`
+- `.openclaw/otel/traces/*.jsonl`
 - `.openclaw/reports/stop-latest-report.json`
+- `.openclaw/reports/stop-guard-latest.json`
 
 ## 4. 关键字段
 

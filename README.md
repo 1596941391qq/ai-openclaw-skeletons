@@ -241,3 +241,33 @@ MIT - 可自由用于商业和非商业场景。
 - `contracts/schemas/stop-assertion-report.schema.json`
 
 这使项目具备了“类似 agent team”的可观测协作能力：可追踪 planner / executor / reviewer 的执行链路、工具调用和成功率。
+
+## 方法论（伯克霍夫 + 奥卡姆）
+
+> 目标：在可解释的前提下，用最少结构实现最大治理能力。
+
+### 抽象映射
+
+- `Skill` = SOP（流程） + Knowledge（规则） + Assertion（验收）
+- `MCP` = Tool Interface（能力入口） + Runtime Code（执行层）
+
+### 分层抽象
+
+- `Pack`：原子能力（单一 SOP + tool + trace）
+- `Bundle`：岗位聚合（多 Pack 编排成角色）
+- `Release`：可部署快照（本地/云端一致，可回滚）
+- `Hook`：治理干预点（权限、审批、审计、预算）
+- `Contract`：跨模块协作契约（通信/目录/协议兼容）
+- `Memory`：跨层记忆（长期策略 -> 短期目标 -> 执行复盘）
+
+### 设计准则
+
+- 伯克霍夫美学公式：用“秩序（可验证、可审计、可组合）”提升系统美感，限制无序扩展。
+- 奥卡姆剃刀：默认最小实现，优先增量兼容，不引入非必要中间层。
+
+### 当前落地
+
+- STOP Manifest + Trace + Assertions
+- OTel 对齐字段（便于接观测平台）
+- MCP 专用追踪
+- 预算门禁判定（`recommend_halt/continue`）

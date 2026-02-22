@@ -58,6 +58,15 @@
       }
     ]
   },
+  "governance": {
+    "budget": {
+      "max_tool_calls": 80,
+      "max_errors": 10,
+      "max_total_duration_ms": 900000,
+      "max_total_tokens": 300000,
+      "max_total_cost_usd": 5
+    }
+  },
   "observability": {
     "level": "L2"
   }

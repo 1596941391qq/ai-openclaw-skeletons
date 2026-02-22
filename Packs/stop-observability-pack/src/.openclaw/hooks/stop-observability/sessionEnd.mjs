@@ -10,6 +10,7 @@ function ensureDirs(baseDir) {
     join(baseDir, "logs"),
     join(baseDir, "reports"),
     join(baseDir, ".sop", "traces"),
+    join(baseDir, "otel", "traces"),
   ];
   for (const dir of dirs) {
     if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
@@ -54,12 +55,33 @@ export default async function sessionEnd(event, ctx) {
 
   const spans = readJsonl(spansFile).filter((row) => row?.attributes?.["session.id"] === sessionId);
   const assertions = readJsonl(assertFile).filter((row) => row?.session_id === sessionId);
+  const guardEvents = readJsonl(join(baseDir, "logs", "stop-guard-events.jsonl")).filter(
+    (row) => row?.session_id === sessionId
+  );
+  const mcpSpans = readJsonl(join(baseDir, "logs", "stop-mcp-spans.jsonl")).filter(
+    (row) => row?.attributes?.["session.id"] === sessionId
+  );
 
   const ts = new Date().toISOString().replace(/[:.]/g, "").slice(0, 15) + "Z";
   const tracePath = join(traceDir, `${ts}_${sessionId}.jsonl`);
   for (const span of spans) {
     appendFileSync(tracePath, `${JSON.stringify(span)}\n`);
   }
+  const otelTracePath = join(baseDir, "otel", "traces", `${ts}_${sessionId}.jsonl`);
+  for (const span of spans) {
+    if (span?.otel) appendFileSync(otelTracePath, `${JSON.stringify(span.otel)}\n`);
+  }
+
+  const usageTotals = spans.reduce(
+    (acc, span) => {
+      acc.input_tokens += Number(span?.attributes?.["usage.input_tokens"] || 0);
+      acc.output_tokens += Number(span?.attributes?.["usage.output_tokens"] || 0);
+      acc.total_tokens += Number(span?.attributes?.["usage.total_tokens"] || 0);
+      acc.cost_usd += Number(span?.attributes?.["usage.cost_usd"] || 0);
+      return acc;
+    },
+    { input_tokens: 0, output_tokens: 0, total_tokens: 0, cost_usd: 0 }
+  );
 
   const summary = {
     ts: new Date().toISOString(),
@@ -80,7 +102,13 @@ export default async function sessionEnd(event, ctx) {
       passed: assertions.filter((row) => row?.result?.status === "pass").length,
       failed: assertions.filter((row) => row?.result?.status === "fail").length,
     },
+    usage_total: usageTotals,
+    mcp_calls: mcpSpans.length,
+    governance: {
+      budget_guard: guardEvents.at(-1)?.evaluation || null,
+    },
     trace_file: tracePath,
+    otel_trace_file: otelTracePath,
   };
 
   const reportFile = join(baseDir, "reports", "stop-latest-report.json");
@@ -92,7 +120,12 @@ export default async function sessionEnd(event, ctx) {
     `- Session: ${sessionId}`,
     `- Spans: ${summary.spans}`,
     `- Assertions: ${summary.assertions.passed} passed / ${summary.assertions.failed} failed`,
+    `- MCP Calls: ${summary.mcp_calls}`,
+    `- Tokens: ${summary.usage_total.total_tokens}`,
+    `- Cost(USD): ${summary.usage_total.cost_usd}`,
+    `- Budget Guard: ${summary.governance.budget_guard?.action || "unknown"}`,
     `- Trace: ${tracePath}`,
+    `- OTel Trace: ${otelTracePath}`,
     `- Report: ${reportFile}`,
   ].join("\n");
 
