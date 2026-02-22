@@ -271,3 +271,15 @@ MIT - 可自由用于商业和非商业场景。
 - OTel 对齐字段（便于接观测平台）
 - MCP 专用追踪
 - 预算门禁判定（`recommend_halt/continue`）
+
+## 参考项目
+
+以下项目作为本仓库演进的长期参考：
+
+- STOP Protocol（可观测与可验证协议）  
+  https://github.com/echoVic/stop-protocol  
+  参考点：Manifest/Trace/Assertions 分层、渐进式可观测等级（L0-L3）、MCP 接入模式。
+
+- Personal AI Infrastructure（个人 AI 基建实践）  
+  https://github.com/danielmiessler/Personal_AI_Infrastructure  
+  参考点：多组件组合式基础设施、长期可维护的自动化运行形态、面向生产的工程组织方式。
