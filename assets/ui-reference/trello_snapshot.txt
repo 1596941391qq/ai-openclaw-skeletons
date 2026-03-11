@@ -1,0 +1,31 @@
+uid=1_0 RootWebArea "Error | Trello" url="https://trello.com/views/kanban"
+  uid=1_1 banner
+    uid=1_2 link "Trello" url="https://trello.com/home"
+      uid=1_3 image "Trello"
+    uid=1_4 button "Features" expandable
+    uid=1_5 button "Solutions" expandable
+    uid=1_6 button "Plans" expandable
+    uid=1_7 link "Pricing" url="https://trello.com/pricing"
+      uid=1_8 StaticText "Pricing"
+    uid=1_9 button "Resources" expandable
+    uid=1_10 link "Log in" url="https://trello.com/login?returnUrl=%2Fviews%2Fkanban"
+      uid=1_11 StaticText "Log in"
+    uid=1_12 link "Get Trello for free" url="https://trello.com/signup?returnUrl=%2Fviews%2Fkanban"
+      uid=1_13 StaticText "Get Trello for free"
+  uid=1_14 generic
+  uid=1_15 generic
+  uid=1_16 StaticText "Atlassian uses cookies to improve your browsing experience, perform analytics and research, and conduct advertising. Accept all cookies to indicate that you agree to our use of cookies on your device. "
+  uid=1_17 link "Atlassian cookies and tracking notice , (opens new window)" url="https://www.atlassian.com/legal/cookies"
+    uid=1_18 StaticText "Atlassian cookies and tracking notice"
+    uid=1_19 StaticText ", (opens new window)"
+  uid=1_20 button "Preferences"
+  uid=1_21 button "Only necessary"
+  uid=1_22 button "Accept all"
+  uid=1_23 generic "Page not found. This page may be private. You may be able to view it by logging in." focusable focused
+    uid=1_24 heading "Page not found." level="1"
+    uid=1_25 StaticText "This page may be private. You may be able to view it by "
+    uid=1_26 link "logging in" url="https://trello.com/views/kanban#"
+      uid=1_27 StaticText "logging in"
+    uid=1_28 StaticText "."
+  uid=1_29 generic
+  uid=1_30 generic atomic live="polite" relevant="additions text"

@@ -2,7 +2,38 @@
 
 面向 AI Agent 的**可插拔数字员工骨架系统**。
 
-不是玩具，不是 demo，是**24小时运行的生产级数字员工基础设施**。
+它不解决某一个单点能力，而是把 **Pack / Bundle / Orchestrator / Contracts / Hooks** 组织成一套可运行、可治理、可审计的常驻系统。
+
+> 不是 demo，不是一次性 workflow。
+> 是能长期在线、可替换、可扩展的数字员工基础设施。
+
+---
+
+## 一眼看懂
+
+```mermaid
+flowchart LR
+    U[User / Trigger] --> O[Orchestrator]
+    O --> B[Bundle]
+    B --> P1[Pack: Router]
+    B --> P2[Pack: Context]
+    B --> P3[Pack: Audit]
+    B --> P4[Pack: Schedule]
+    O --> H[Hooks]
+    H --> A[Policy / Approval / Budget / Trace]
+    O --> C[Contracts]
+    C --> R[Rules / Interfaces / Boundaries]
+```
+
+OpenClaw 把 AI work 放进同一套操作面里：
+
+- **Board**：编排任务与协作流转
+- **Table**：批量管理对象、状态和运营动作
+- **Timeline**：查看执行链路、审计记录和复盘过程
+- **Docs**：沉淀规则、上下文、SOP 和讨论
+- **Dashboard**：监控结果、预算、成功率与系统健康度
+
+它们不是五个拼起来的页面，而是**同一套系统在不同操作尺度下的视图**。
 
 ---
 
@@ -10,53 +41,21 @@
 
 ### 什么是数字员工骨架？
 
-想象你要雇佣一个员工：
-- 需要明确职责边界（什么该做，什么不该做）
-- 需要工作手册（遇到什么情况怎么处理）
-- 需要审计监督（做了什么，做得怎么样）
-- 需要可替换（做不好就换，不依赖特定个体）
+如果把 agent 当成员工来运营，系统至少要解决五件事：
 
-**数字员工骨架就是把 AI 组织拆成四层：**
-- Pack = 手艺
-- Bundle = 工种
-- Orchestrator = 组织方式
-- Contracts = 规章制度
+- 职责边界：什么该做，什么不该做
+- 工作手册：遇到什么情况怎么处理
+- 治理干预：谁能审批、谁能中断、谁能审计
+- 运行记录：做了什么、怎么做的、结果如何
+- 替换能力：做不好可以换 Pack、换 Bundle、换 Orchestrator
 
-`Hook` 不是层级，属于治理插槽：负责审计、权限、干预点。
+**数字员工骨架，就是把这些能力拆成稳定的组织层次：**
 
-### 为什么它不是“功能拼盘”
-
-很多 agent 项目一上来就在堆功能名：Board、Docs、Dashboard、Timeline。
-这会把产品讲成一堆后台页面的拼接。
-
-**OpenClaw 不是这个路数。**
-
-这里的 Board / Table / Timeline / Docs / Dashboard，应该被理解成**同一套数字员工操作台的五种观察面**：
-
-- **Board**：看任务流转与 agent 协作
-- **Table**：看对象状态、批量操作与运营面
-- **Timeline**：看执行历史、审计链路与复盘面
-- **Docs**：看规则、上下文、SOP 与讨论沉淀
-- **Dashboard**：看结果、预算、成功率与系统健康度
-
-重点不是“我们也有这些页面”，而是：
-
-> **同一个 AI orchestration cockpit，在不同认知尺度下被观看、被操作、被审计。**
-
-所以 README 后面的所有结构说明，都按**一套系统**来写，不按“多个参考产品拼盘”来写。
-
-### 我们不赌单一生态，赌 Always On
-
-我们不把未来绑定在某一个框架名字上，而是坚持长期有效的工程范式：
-
-- Skill
-- MCP
-- CLI
-- Hook
-- Cron
-
-这些范式会长期存在，骨架会持续兼容。  
-今天可以是 OpenClaw，后续如果要用更安全的 Rust 运行时（例如 ZeroClaw）也可以，关键是看谁把 Always On 走得更远。
+- **Pack** = 手艺
+- **Bundle** = 工种
+- **Orchestrator** = 组织方式
+- **Contracts** = 规章制度
+- **Hooks** = 治理插槽
 
 ### 为什么需要骨架？
 
@@ -67,7 +66,7 @@ Agent: 直接发
 → 不知道发给谁
 → 不知道说什么
 → 发了也不知道发没发成功
-→ 更不能审计和回滚
+→ 不能审计，也不能回滚
 ```
 
 **有骨架的 AI Agent：**
@@ -81,6 +80,19 @@ Agent:
   5. 返回结果（标准化输出）
 → 可控、可审计、可回滚、可替换
 ```
+
+### 我们押注什么
+
+我们不把未来绑定在某一个框架名字上，而是押注这些长期有效的工程范式：
+
+- Skill
+- MCP
+- CLI
+- Hook
+- Cron
+
+这些范式会长期存在，骨架也应该长期兼容。
+今天可以运行在 OpenClaw 上，后续也可以迁移到更安全或更强约束的运行时；关键不是品牌，而是 **Always On** 的组织能力。
 
 ---
 
@@ -308,12 +320,81 @@ MIT - 可自由用于商业和非商业场景。
 
 ## 参考项目
 
-以下项目作为本仓库演进的长期参考：
+以下项目作为本仓库演进的长期参考。不是照搬实现，而是分别吸收其在循环执行、规范驱动、多代理编排、长期记忆、可视化渲染与工程治理上的成熟做法。
 
-- STOP Protocol（可观测与可验证协议）  
-  https://github.com/echoVic/stop-protocol  
+### 自主循环与任务闭环
+
+- Ralph（自主代理循环）
+  https://github.com/snarktank/ralph
+  参考点：围绕 PRD 持续循环执行，直到目标闭环；适合作为 Always-on orchestrator 的任务推进参考。
+
+- Anthropic Multi-Agent Research System
+  参考点：main agent 只负责协调与最终合成，子 agent 并行执行具体研究任务；适合作为主控/子工种分层的参考。
+
+### OpenClaw 客户端与多代理操作面
+
+- clawUI（OpenClaw 桌面客户端）
+  https://github.com/Kt-L/clawUI
+  参考点：React + Vite + Electron 的桌面控制台形态、快速响应的多虾交互体验、实验性操作面的组织方式。
+
+- claude-code-by-agents（面向公众的多代理 Claude Code 编排）
+  https://github.com/baryhuang/claude-code-by-agents
+  参考点：通过 `@Agent` 协调本地与远程代理；可作为 Contract 中自然通信语法与代理寻址方式的参考。
+
+- agents（通用智能自动化与多代理编排仓库）
+  https://github.com/wshobson/agents
+  参考点：现代软件开发里的多代理能力组织、角色划分与统一仓库布局。
+
+### 长期记忆与记忆层集成
+
+- EverMemOS（跨 LLM 与平台代理的长期记忆操作系统）
+  https://github.com/EverMind-AI/EverMemOS
+  参考点：长期记忆、结构化提取、检索与画像演化；可作为 Memory 层的核心参考。
+
+- openclaw-EverMemOS（EverMemOS 的 OpenClaw 集成）
+  https://github.com/ZhenhangTung/openclaw-EverMemOS
+  参考点：把长期记忆系统接入 OpenClaw agent 作为 memory layer 的具体插件路径。
+
+### 规范驱动与规划工作流
+
+- get-shit-done（规范驱动开发系统）
+  https://github.com/gsd-build/get-shit-done/
+  参考点：元提示、上下文工程、spec-first 工作方式；适合作为规范驱动执行骨架的参考。
+
+- planning-with-files（持久标记规划）
+  https://github.com/OthmanAdi/planning-with-files
+  参考点：用 Claude Code 技能实现持久化规划文件与阶段标记；适合作为 plan file / work log 机制参考。
+
+- superpowers（编码代理的软件工作流）
+  https://github.com/obra/superpowers
+  参考点：基于 skills 与初始指令的可组合工作流，适合作为 bundle/workflow 设计参考。
+
+- spec-kit（GitHub 规范驱动开发工具包）
+  https://github.com/github/spec-kit
+  参考点：从产品场景到可预测结果的规范驱动链路，适合作为 Contracts 与执行边界参考。
+
+- everything-claude-code（Claude Code 配置合集）
+  https://github.com/affaan-m/everything-claude-code
+  参考点：agents、skills、hooks、commands、rules、MCP 的实战组合方式。
+
+### 数据渲染与结果可视化
+
+- json-render（Schema -> JSON -> 业务组件渲染）
+  https://github.com/vercel-labs/json-render
+  参考点：不让模型直接输出 JSX/TSX，而是先输出严格 schema 约束下的标准 JSON，再由前端业务组件渲染；适合作为结果页、KPI 卡片、审计视图的渲染策略参考。
+
+### 可观测、工程基建与运行治理
+
+- STOP Protocol（可观测与可验证协议）
+  https://github.com/echoVic/stop-protocol
   参考点：Manifest/Trace/Assertions 分层、渐进式可观测等级（L0-L3）、MCP 接入模式。
 
-- Personal AI Infrastructure（个人 AI 基建实践）  
-  https://github.com/danielmiessler/Personal_AI_Infrastructure  
+- Personal AI Infrastructure（个人 AI 基建实践）
+  https://github.com/danielmiessler/Personal_AI_Infrastructure
   参考点：多组件组合式基础设施、长期可维护的自动化运行形态、面向生产的工程组织方式。
+
+- LangGraph
+  参考点：当前的 workflow yaml 可逐步升级为更明确的状态机风格，以获得更稳健的分支、循环与失败恢复语义。
+
+- Anthropic Claude Agent SDK + long-running harness
+  参考点：每次 session 启动 init agent 做目标对齐；执行过程保留 git 痕迹、状态切面与长时运行治理能力。
