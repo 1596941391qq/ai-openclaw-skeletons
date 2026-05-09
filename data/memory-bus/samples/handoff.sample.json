@@ -1,0 +1,20 @@
+{
+  "handoff_id": "handoff_20260309_001",
+  "from_department": "SEO",
+  "to_department": "AnalyticsDept",
+  "action": "rank_track",
+  "biz_key": "leewow|leewow.com|printful vs leewow",
+  "status": "pending",
+  "created_at": "2026-03-09T09:11:00+08:00",
+  "updated_at": "2026-03-09T09:11:00+08:00",
+  "trace": {
+    "orchestrator_task_id": "orch_20260309_001",
+    "batch_id": "batch_20260309_a",
+    "run_id": "run_01"
+  },
+  "context": {
+    "engine": "google",
+    "locale": "en-US",
+    "needs_screenshot": true
+  }
+}
