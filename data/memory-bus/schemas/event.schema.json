@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MemoryBusEvent",
+  "type": "object",
+  "required": [
+    "event_id",
+    "event_type",
+    "timestamp",
+    "department",
+    "biz_key",
+    "trace",
+    "payload"
+  ],
+  "properties": {
+    "event_id": { "type": "string", "minLength": 8 },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "intent_routed",
+        "task_created",
+        "task_dispatched",
+        "task_succeeded",
+        "task_failed",
+        "retry_scheduled",
+        "handoff_created",
+        "handoff_acknowledged",
+        "reconcile_done"
+      ]
+    },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "department": { "type": "string", "minLength": 2 },
+    "biz_key": { "type": "string", "minLength": 3 },
+    "trace": {
+      "type": "object",
+      "required": ["orchestrator_task_id", "batch_id", "run_id"],
+      "properties": {
+        "orchestrator_task_id": { "type": "string", "minLength": 8 },
+        "batch_id": { "type": "string", "minLength": 4 },
+        "run_id": { "type": "string", "minLength": 4 }
+      },
+      "additionalProperties": false
+    },
+    "payload": { "type": "object" }
+  },
+  "additionalProperties": false
+}
