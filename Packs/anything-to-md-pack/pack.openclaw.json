@@ -1,0 +1,8 @@
+{
+  "skills": {
+    "anything-to-md": {
+      "source": "local:anything-to-md-pack",
+      "enabled": true
+    }
+  }
+}
