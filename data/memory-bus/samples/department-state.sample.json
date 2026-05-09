@@ -1,0 +1,12 @@
+{
+  "department": "PublishDept",
+  "biz_key": "leewow|leewow.com|printful vs leewow",
+  "state": "published",
+  "updated_at": "2026-03-09T09:10:00+08:00",
+  "trace": {
+    "orchestrator_task_id": "orch_20260309_001",
+    "batch_id": "batch_20260309_a",
+    "run_id": "run_01"
+  },
+  "notes": "UniFuncs code=0"
+}
