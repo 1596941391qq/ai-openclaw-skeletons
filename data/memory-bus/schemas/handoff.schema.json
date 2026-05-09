@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DepartmentHandoff",
+  "type": "object",
+  "required": [
+    "handoff_id",
+    "from_department",
+    "to_department",
+    "action",
+    "biz_key",
+    "status",
+    "created_at",
+    "trace"
+  ],
+  "properties": {
+    "handoff_id": { "type": "string", "minLength": 8 },
+    "from_department": { "type": "string", "minLength": 2 },
+    "to_department": { "type": "string", "minLength": 2 },
+    "action": { "type": "string", "minLength": 2 },
+    "biz_key": { "type": "string", "minLength": 3 },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "accepted", "rejected", "done", "failed"]
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "trace": {
+      "type": "object",
+      "required": ["orchestrator_task_id", "batch_id", "run_id"],
+      "properties": {
+        "orchestrator_task_id": { "type": "string" },
+        "batch_id": { "type": "string" },
+        "run_id": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "context": { "type": "object" }
+  },
+  "additionalProperties": false
+}
