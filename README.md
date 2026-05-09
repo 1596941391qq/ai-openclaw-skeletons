@@ -400,3 +400,12 @@ MIT - 可自由用于商业和非商业场景。
 
 - Anthropic Claude Agent SDK + long-running harness
   参考点：每次 session 启动 init agent 做目标对齐；执行过程保留 git 痕迹、状态切面与长时运行治理能力。
+
+
+### 新增模块 (2026-05-10)
+
+| 模块 | 路径 | 说明 |
+|---|---|---|
+| Orchestrator 蓝图模板 |  | 通用编排蓝图模式，含 blueprint-v1.md + memory-contract.md |
+| Memory Bus Schema |  | Pack 间通信的标准 JSON schema（event/department-state/handoff） |
+| anything-to-md Pack |  | 文件转 Markdown 工具，CLI + MCP Server + Skill 三模式
