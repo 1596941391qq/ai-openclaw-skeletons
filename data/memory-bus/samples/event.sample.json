@@ -1,0 +1,17 @@
+{
+  "event_id": "evt_20260309_0001",
+  "event_type": "task_dispatched",
+  "timestamp": "2026-03-09T09:00:00+08:00",
+  "department": "SEO",
+  "biz_key": "leewow|leewow.com|printful vs leewow",
+  "trace": {
+    "orchestrator_task_id": "orch_20260309_001",
+    "batch_id": "batch_20260309_a",
+    "run_id": "run_01"
+  },
+  "payload": {
+    "action": "pseo_publish",
+    "target_department": "PublishDept",
+    "priority": "high"
+  }
+}
