@@ -409,3 +409,31 @@ MIT - 可自由用于商业和非商业场景。
 | Orchestrator 蓝图模板 |  | 通用编排蓝图模式，含 blueprint-v1.md + memory-contract.md |
 | Memory Bus Schema |  | Pack 间通信的标准 JSON schema（event/department-state/handoff） |
 | anything-to-md Pack |  | 文件转 Markdown 工具，CLI + MCP Server + Skill 三模式
+---
+
+## 教程
+
+完整的图文教程在 [`docs/`](docs/) 目录下。建议按顺序阅读：
+
+| # | 教程 | 说明 |
+|---|------|------|
+| 01 | [从零搭建](docs/01-quick-start.md) | clone → 配置 → 第一个 agent 跑起来 |
+| 02 | [Golutra 适配](docs/02-golutra-integration.md) | workspace.json 配置详解 |
+| 03 | [自动免确认](docs/03-auto-approve-setup.md) | 让 agent 不再频繁停下来问你 |
+| 04 | [AGENTS.md 指南](docs/04-agents-md-guide.md) | 编写 agent 行为规范 |
+| 05 | [Pack 开发](docs/05-pack-development.md) | 创建自定义能力模块 |
+| 06 | [Bundle 组合](docs/06-bundle-composition.md) | 多 Pack 组合成工作流 |
+| 07 | [Orchestrator 设计](docs/07-orchestrator-design.md) | 状态机编排复杂流程 |
+| 08 | [Memory Bus](docs/08-memory-bus.md) | Pack 间事件通信 |
+| 09 | [Hook 系统](docs/09-hook-system.md) | 治理插槽与审批拦截 |
+| 10 | [定时任务](docs/10-scheduled-tasks.md) | 自动调度与定时执行 |
+| 11 | [最佳实践](docs/11-best-practices.md) | 常见坑与经验总结 |
+
+### 基础设施模板
+
+开箱即用的配置模板在 [`templates/`](templates/) 目录下：
+
+- [`.golutra/workspace.example.json`](templates/.golutra/workspace.example.json) — Golutra 工作空间配置
+- [`.claude/settings.example.json`](templates/.claude/settings.example.json) — Claude Code 自动免确认
+- [`AGENTS.example.md`](templates/AGENTS.example.md) — Agent 行为规范模板
+- [`hooks/auto-approve-hook.mjs`](templates/hooks/auto-approve-hook.mjs) — Hook 自动审批示例

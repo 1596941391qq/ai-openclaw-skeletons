@@ -1,0 +1,42 @@
+{
+  "projectId": "your-project-id",
+  "version": 1,
+  "members": [
+    {
+      "id": "01J00000000000000000000000",
+      "name": "Owner",
+      "role": "",
+      "roleType": "owner",
+      "status": "online"
+    },
+    {
+      "autoStartTerminal": true,
+      "id": "01KXXXXXXXXXXXXXXXXXXXXXXXXX",
+      "name": "My AI Assistant",
+      "onboardingPromptTemplate": {
+        "zh": "{{memberId}}，这是你的id。{{workspacePath}}，这是你的工作路径。这是当前的项目技能列表：{{firstCommand}}（直接执行），{{skillLoadingRule}}阅读{{workspacePath}}下的AGENTS.md，遵守AGENTS规范。{{responseLanguageRule}}",
+        "en": "{{memberId}}, this is your id. {{workspacePath}}, this is your workspace path. Project skill list: {{firstCommand}} (execute directly), {{skillLoadingRule}} Read AGENTS.md under {{workspacePath}}, follow AGENTS spec. {{responseLanguageRule}}"
+      },
+      "roleType": "assistant",
+      "sandboxed": false,
+      "scheduledDispatchSettings": {
+        "tasks": [
+          {
+            "id": "example-task-id",
+            "enabled": false,
+            "mode": "daily",
+            "dailyTime": "09:00",
+            "channelIds": ["your-channel-id"],
+            "prompt": "Your scheduled task prompt here."
+          }
+        ]
+      },
+      "skillPaths": [],
+      "status": "online",
+      "terminalCommand": "claude",
+      "terminalCommandAffixSuffix": "--dangerously-skip-permissions",
+      "terminalType": "claude",
+      "unlimitedAccess": true
+    }
+  ]
+}
