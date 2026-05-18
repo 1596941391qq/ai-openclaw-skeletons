@@ -1,0 +1,20 @@
+{
+  "_comment": "HyperFrames configuration template. Replace with your actual HeyGen API key.",
+  "apiKey": "YOUR_HEYGEN_API_KEY_HERE",
+  "outputDir": "./output",
+  "defaultResolution": {
+    "width": 1920,
+    "height": 1080
+  },
+  "defaultFps": 30,
+  "avatar": {
+    "enabled": false,
+    "avatarId": "",
+    "voiceId": ""
+  },
+  "branding": {
+    "primaryColor": "#2563eb",
+    "fontFamily": "Inter, sans-serif",
+    "logoUrl": ""
+  }
+}
